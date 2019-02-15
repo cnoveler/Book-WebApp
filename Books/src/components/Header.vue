@@ -3,25 +3,24 @@
   <div>
     <header ref="header">
       <div class="header">
-        <div class="left-icon">
-          <slot name="left-icon">
+        <slot name="left-icon">
+          <div class="left-icon">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-left"></use>
             </svg>
-          </slot>
-        </div>
-        <div class="content">
-          <div class="my-bookshelf">
-            <slot name="shelf-left">
+          </div>
+        </slot>
+        <slot name="header-content">
+          <div class="content">
+            <div class="my-bookshelf">
               <span>我的书架</span>
-            </slot>
-          </div>
-          <div class="my-history">
-            <slot name="shelf-right">
+            </div>
+            <div class="my-history">
               <span>最近阅读</span>
-            </slot>
+            </div>
           </div>
-        </div>
+        </slot>
+
         <div class="right-option">
           <div class="search">
             <slot name="search-user">
@@ -96,6 +95,7 @@ header {
   width: 100%;
   height: 50px;
   border-bottom: 1px solid #eee;
+  background: #fff;
   .header {
     width: 100%;
     height: 50px;
