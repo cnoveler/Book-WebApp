@@ -3,31 +3,41 @@
   <div>
     <header ref="header">
       <div class="header">
-        <div class="left-return">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-left"></use>
-          </svg>
+        <div class="left-icon">
+          <slot name="left-icon">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-left"></use>
+            </svg>
+          </slot>
         </div>
         <div class="content">
           <div class="my-bookshelf">
-            <span>我的书架</span>
+            <slot name="shelf-left">
+              <span>我的书架</span>
+            </slot>
           </div>
           <div class="my-history">
-            <span>最近阅读</span>
+            <slot name="shelf-right">
+              <span>最近阅读</span>
+            </slot>
           </div>
         </div>
         <div class="right-option">
           <div class="search">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-search"></use>
-            </svg>
+            <slot name="search-user">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-search"></use>
+              </svg>
+            </slot>
           </div>
-          <div class="more" @click="openmenu">
-            <svg class="icon" aria-hidden="true">
-              <use v-if="!open" xlink:href="#icon-menu"></use>
-              <use v-else xlink:href="#icon-close"></use>
-            </svg>
-          </div>
+          <slot name="right-more">
+            <div class="more" @click="openmenu">
+              <svg class="icon" aria-hidden="true">
+                <use v-if="!open" xlink:href="#icon-menu"></use>
+                <use v-else xlink:href="#icon-close"></use>
+              </svg>
+            </div>
+          </slot>
         </div>
       </div>
       <div class="mask" v-if="open"></div>
@@ -99,7 +109,7 @@ header {
     -khtml-user-select: none; /* KHTML内核私有属性 */
     -o-user-select: none; /* Opera私有属性 */
     user-select: none; /* CSS3属性 */
-    .left-return {
+    .left-icon {
       cursor: pointer;
       margin-left: 10px;
       font-size: 24px;
