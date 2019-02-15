@@ -32,10 +32,10 @@ footer {
   width: 100%;
   height: 110px;
   display: flex;
-  position: fixed;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  background: #fff;
   bottom: 0;
   color: #aaa;
   -moz-user-select: none; /* Firefox私有属性 */
@@ -44,7 +44,6 @@ footer {
   -khtml-user-select: none; /* KHTML内核私有属性 */
   -o-user-select: none; /* Opera私有属性 */
   user-select: none; /* CSS3属性 */
-  background: #fff;
   ul,
   li,
   a {
