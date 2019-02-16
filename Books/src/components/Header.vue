@@ -4,7 +4,7 @@
     <header ref="header">
       <div class="header">
         <slot name="left-icon">
-          <div class="left-icon">
+          <div class="left-icon" onclick="history.back(-1)">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-left"></use>
             </svg>
