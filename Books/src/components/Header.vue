@@ -12,11 +12,15 @@
         </slot>
         <slot name="header-content">
           <div class="content">
-            <div class="my-bookshelf">
-              <span>我的书架</span>
+            <div :class="['my-bookshelf',{active: isHis == 'bookshelf'}]">
+              <span>
+                <a href="/bookshelf/my">我的书架</a>
+              </span>
             </div>
-            <div class="my-history">
-              <span>最近阅读</span>
+            <div :class="['my-history',{active: isHis == 'history'}]">
+              <span>
+                <a href="/bookshelf/my-history">最近阅读</a>
+              </span>
             </div>
           </div>
         </slot>
@@ -77,6 +81,7 @@
 <script>
 import "@/assets/styles/animate.css";
 export default {
+  props: ["isHis"],
   data() {
     return {
       open: false
@@ -119,19 +124,33 @@ header {
       display: flex;
       font-size: 14px;
       font-weight: 500;
+      .my-history.active {
+        background-color: #ed424b;
+        a {
+          color: #fff;
+        }
+      }
+      .my-bookshelf.active {
+        background-color: #ed424b;
+        a {
+          color: #fff;
+        }
+      }
       .my-bookshelf {
         cursor: pointer;
         width: 100px;
-        height: 40px;
+        height: 38px;
         display: flex;
         align-items: center;
-        background-color: #ed424b;
+        background-color: #fff;
         border-radius: 4px 0 0 4px;
+        border: 1px solid #ed424b;
         justify-content: center;
-        span {
+        a {
           letter-spacing: 3px;
           font-size: 16px;
-          color: #fff;
+          color: #ed424b;
+          text-decoration: none;
         }
       }
       .my-history {
@@ -145,7 +164,8 @@ header {
         border-left: none;
         border-radius: 0 4px 4px 0;
         justify-content: center;
-        span {
+        a {
+          text-decoration: none;
           letter-spacing: 3px;
           font-size: 16px;
           color: #ed424b;

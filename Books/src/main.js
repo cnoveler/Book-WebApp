@@ -6,9 +6,10 @@ import router from './router'
 
 // import '@/assets/icon/iconfont.css'
 import '@/assets/icon/iconfont.js'
-
+import mixins from '@/mixins'
 
 Vue.config.productionTip = false
+Vue.mixin(mixins)
 
 /* eslint-disable no-new */
 new Vue({
