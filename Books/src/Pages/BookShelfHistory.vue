@@ -2,6 +2,7 @@
   <div>
     <Header isHis="history"/>
     <div class="content">
+      <div class="null" v-if="BookHistory.length <= 0">还没有阅读历史哟</div>
       <div class="book-list" ref="book-list" v-if="BookHistory.length > 0">
         <ul>
           <li class="book-li" v-for="book in BookHistory" :key="book.id">
@@ -35,7 +36,9 @@
         </ul>
       </div>
     </div>
-    <Footer/>
+    <div class="footer" ref="footer">
+      <Footer/>
+    </div>
   </div>
 </template>
 
@@ -46,11 +49,53 @@ export default {
   components: {
     Header,
     Footer
+  },
+  watch: {
+    BookHistory(val, old) {
+      if (this.BookHistory.length <= 5) {
+        this.$refs["footer"].style.position = "fixed";
+        this.$refs["footer"].style.bottom = "0px";
+      } else {
+        this.$refs["footer"].style.position = "relative";
+      }
+    }
   }
 };
 </script>
 
 <style scoped lang="scss">
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  .my-default-header {
+    display: flex;
+    margin: 10px;
+    justify-content: space-between;
+    .title {
+      font-weight: 600;
+    }
+  }
+  .null {
+    position: relative;
+    top: 200px;
+    display: flex;
+    height: 200px;
+    flex-direction: column;
+    align-items: center;
+    color: #ccc;
+    font-weight: 200;
+  }
+  .null::before {
+    display: block;
+    width: 2.25rem;
+    height: 3rem;
+    margin: 0 auto 0.75rem;
+    content: "";
+    background: url(../assets/image/null.svg);
+    background-size: 100% 100%;
+  }
+}
 .book-list {
   width: calc(100% - 50px);
   display: flex;
@@ -151,5 +196,8 @@ export default {
       }
     }
   }
+}
+.footer {
+  width: 100%;
 }
 </style>

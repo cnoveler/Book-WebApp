@@ -167,12 +167,17 @@ const mixins = {
         isSelected: false
       }
     ];
-    // localStorage.setItem("book-history", JSON.stringify(data));
+    if (this.BookData.length <= 0) {
+      localStorage.setItem("book-data", JSON.stringify(data));
+    }
     this.BookData = JSON.parse(localStorage.getItem('book-data'))
     if (this.BookData === null) {
       this.BookData = []
     }
-    this.BookHistory = JSON.parse(localStorage.getItem('book-history'))
+    if (this.BookHistory.length <= 0) {
+      localStorage.setItem("RECENTLY_READ", JSON.stringify(data));
+    }
+    this.BookHistory = JSON.parse(localStorage.getItem('RECENTLY_READ'))
     if (this.BookHistory === null) {
       this.BookHistory = []
     }
