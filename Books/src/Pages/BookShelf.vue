@@ -123,6 +123,9 @@ export default {
     }
   },
   methods: {
+    test() {
+      console.log(1);
+    },
     selected_book(_id) {
       if (this.isEdit) {
         const obj = this.BookData.filter(item => {
@@ -159,6 +162,9 @@ export default {
     justify-content: space-between;
     .title {
       font-weight: 600;
+    }
+    .edit {
+      cursor: pointer;
     }
   }
   .null {

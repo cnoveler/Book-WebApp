@@ -2,7 +2,7 @@ const mixins = {
   data() {
     return {
       BookData: [], // 全局混入 书架数据
-      BookHistory: [] // 全局混入 最近阅读书籍数据
+      BookHistory: [], // 全局混入 最近阅读书籍数据
     }
   },
   created() {
@@ -181,6 +181,7 @@ const mixins = {
     if (this.BookHistory === null) {
       this.BookHistory = []
     }
+
   },
 }
 

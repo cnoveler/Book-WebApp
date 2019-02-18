@@ -11,6 +11,7 @@ import mixins from '@/mixins'
 Vue.config.productionTip = false
 Vue.mixin(mixins)
 
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -4,14 +4,15 @@ import Home from '@/pages/Home'
 import BookShelf from '@/pages/BookShelf'
 import BookShelfHistory from '@/pages/BookShelfHistory'
 import Errors from '@/pages/Error';
+import Search from '@/pages/Search'
 Vue.use(Router)
 
 export default new Router({
   mode: "history",
   routes: [{
       path: '/',
-      name: 'Home',
-      component: Home
+      name: 'Search',
+      component: Search
     },
     {
       path: '/bookshelf/my',
