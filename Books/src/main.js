@@ -8,6 +8,10 @@ import router from './router'
 import '@/assets/icon/iconfont.js'
 import mixins from '@/mixins'
 
+// 全局中引入js 使用 this.$config
+import config from "@/config";
+Vue.prototype.$config = config
+
 Vue.config.productionTip = false
 Vue.mixin(mixins)
 

@@ -37,7 +37,6 @@ footer {
   justify-content: space-around;
   background: #fff;
   bottom: 0;
-  z-index: 1;
   color: #aaa;
   -moz-user-select: none; /* Firefox私有属性 */
   -webkit-user-select: none; /* WebKit内核私有属性 */

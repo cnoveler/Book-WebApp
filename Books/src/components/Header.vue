@@ -14,19 +14,21 @@
           <div class="content">
             <div :class="['my-bookshelf',{active: isHis == 'bookshelf'}]">
               <span>
-                <a href="/bookshelf/my">我的书架</a>
+                <router-link to="/bookshelf/my">我的书架</router-link>
+                <!-- <a href="/bookshelf/my">我的书架</a> -->
               </span>
             </div>
             <div :class="['my-history',{active: isHis == 'history'}]">
               <span>
-                <a href="/bookshelf/my-history">最近阅读</a>
+                <router-link to="/bookshelf/my-history">最近阅读</router-link>
+                <!-- <a href="/bookshelf/my-history">最近阅读</a> -->
               </span>
             </div>
           </div>
         </slot>
 
         <div class="right-option">
-          <div class="search">
+          <div class="search" @click="click_search">
             <slot name="search-user">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-search"></use>
@@ -81,15 +83,25 @@
 <script>
 import "@/assets/styles/animate.css";
 export default {
-  props: ["isHis"],
+  props: ["isHis", "isSearch"],
   data() {
     return {
-      open: false
+      open: false,
+      isSearched: this.isSearch
     };
   },
   methods: {
     openmenu() {
       this.open = !this.open;
+    },
+    click_search() {
+      this.isSearched = true;
+      return this.$emit("input", this.isSearched);
+    }
+  },
+  watch: {
+    isSearch(val, old) {
+      this.isSearched = val;
     }
   }
 };

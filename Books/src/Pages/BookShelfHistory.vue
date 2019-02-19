@@ -1,43 +1,48 @@
 <template>
   <div>
-    <Header isHis="history"/>
-    <div class="content">
-      <div class="null" v-if="BookHistory.length <= 0">还没有阅读历史哟</div>
-      <div class="book-list" ref="book-list" v-if="BookHistory.length > 0">
-        <ul>
-          <li class="book-li" v-for="book in BookHistory" :key="book.id">
-            <div class="book-layout">
-              <a href="javascript:;">
-                <img :src="decodeURIComponent((book.cover).replace('/agent/',''))">
-              </a>
-              <div class="book-info">
-                <div class="book-header">
-                  <div class="book-title">{{book.title}}</div>
-                  <div class="book-title-r">
-                    <span>立即阅读</span>
+    <div v-show="!isSearch">
+      <Header isHis="history" v-model="isSearch"/>
+      <div class="content">
+        <div class="null" v-if="BookHistory.length <= 0">还没有阅读历史哟</div>
+        <div class="book-list" ref="book-list" v-if="BookHistory.length > 0">
+          <ul>
+            <li class="book-li" v-for="book in BookHistory" :key="book.id">
+              <div class="book-layout">
+                <a href="javascript:;">
+                  <img :src="decodeURIComponent((book.cover).replace('/agent/',''))">
+                </a>
+                <div class="book-info">
+                  <div class="book-header">
+                    <div class="book-title">{{book.title}}</div>
+                    <div class="book-title-r">
+                      <span>立即阅读</span>
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-right"></use>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="book-meta">
                     <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-right"></use>
+                      <use xlink:href="#icon-user"></use>
                     </svg>
+                    {{book.author}} | 尚未阅读
+                  </div>
+                  <div class="book-to-new">
+                    <span class="dot-red"></span>
+                    <a href="javascript:;">更新至 {{book.lastChapter}}</a>
                   </div>
                 </div>
-                <div class="book-meta">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-user"></use>
-                  </svg>
-                  {{book.author}} | 尚未阅读
-                </div>
-                <div class="book-to-new">
-                  <span class="dot-red"></span>
-                  <a href="javascript:;">更新至 {{book.lastChapter}}</a>
-                </div>
               </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer" ref="footer">
+        <Footer/>
       </div>
     </div>
-    <div class="footer" ref="footer">
-      <Footer/>
+    <div class="search-page" v-show="isSearch">
+      <Search v-model="isSearch"/>
     </div>
   </div>
 </template>
@@ -45,10 +50,17 @@
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Search from "@/components/search";
 export default {
+  data() {
+    return {
+      isSearch: false //是否搜索
+    };
+  },
   components: {
     Header,
-    Footer
+    Footer,
+    Search
   },
   watch: {
     BookHistory(val, old) {

@@ -1,83 +1,91 @@
 // 书架
 <template>
   <div>
-    <div class="edit-header" ref="edit" v-show="isEdit">
-      <div class="checkall" @click="checkall">全选</div>
-      <div class="book-count">共{{BookData.length}}本</div>
-      <div class="close" @click="isEdit=!isEdit">取消</div>
-    </div>
-    <div class="mask-bookshelf" v-show="isDefaultshelf" @click="isDefaultshelf=!isDefaultshelf">
-      <ul class="list">
-        <li>
-          <span class="title">默认书架({{BookData.length}})</span>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-check"></use>
-          </svg>
-        </li>
-      </ul>
-    </div>
-    <transition enter-active-class="animated slideInUp" leave-active-class="animated slideOutDown">
-      <div class="delete" v-show="selected">
-        <button @click="clicked_del">删除</button>
+    <div v-show="!isSearch">
+      <div class="edit-header" ref="edit" v-show="isEdit">
+        <div class="checkall" @click="checkall">全选</div>
+        <div class="book-count">共{{BookData.length}}本</div>
+        <div class="close" @click="isEdit=!isEdit">取消</div>
       </div>
-    </transition>
-    <Header v-show="!isEdit" isHis="bookshelf"/>
-    <div class="content">
-      <div class="my-default-header" v-show="!isEdit">
-        <div class="default-selected" @click="isDefaultshelf=!isDefaultshelf">
-          <span class="title">默认书架({{BookData.length}})</span>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-caret-down"></use>
-          </svg>
-        </div>
-        <div class="edit" @click="isEdit=!isEdit">编辑</div>
-      </div>
-      <div class="null" v-if="BookData.length <= 0">默认书架是空的</div>
-      <div class="book-list" ref="book-list" v-if="BookData.length > 0">
-        <ul>
-          <li
-            class="book-li"
-            v-for="book in BookData"
-            :key="book.id"
-            @click="selected_book(book._id)"
-          >
-            <i :class="['radio',{active: book.isSelected}] " v-show="isEdit">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-check"></use>
-              </svg>
-            </i>
-            <div class="book-layout">
-              <a href="javascript:;">
-                <img :src="decodeURIComponent((book.cover).replace('/agent/',''))">
-              </a>
-              <div class="book-info">
-                <div class="book-header">
-                  <div class="book-title">{{book.title}}</div>
-                  <div class="book-title-r">
-                    <span>立即阅读</span>
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-right"></use>
-                    </svg>
-                  </div>
-                </div>
-                <div class="book-meta">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-user"></use>
-                  </svg>
-                  {{book.author}} | 尚未阅读
-                </div>
-                <div class="book-to-new">
-                  <span class="dot-red"></span>
-                  <a href="javascript:;">更新至 {{book.lastChapter}}</a>
-                </div>
-              </div>
-            </div>
+      <div class="mask-bookshelf" v-show="isDefaultshelf" @click="isDefaultshelf=!isDefaultshelf">
+        <ul class="list">
+          <li>
+            <span class="title">默认书架({{BookData.length}})</span>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-check"></use>
+            </svg>
           </li>
         </ul>
       </div>
+      <transition
+        enter-active-class="animated slideInUp"
+        leave-active-class="animated slideOutDown"
+      >
+        <div class="delete" v-show="selected">
+          <button @click="clicked_del">删除</button>
+        </div>
+      </transition>
+      <Header v-show="!isEdit" v-model="isSearch" isHis="bookshelf"/>
+      <div class="content">
+        <div class="my-default-header" v-show="!isEdit">
+          <div class="default-selected" @click="isDefaultshelf=!isDefaultshelf">
+            <span class="title">默认书架({{BookData.length}})</span>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-caret-down"></use>
+            </svg>
+          </div>
+          <div class="edit" @click="isEdit=!isEdit">编辑</div>
+        </div>
+        <div class="null" v-if="BookData.length <= 0">默认书架是空的</div>
+        <div class="book-list" ref="book-list" v-if="BookData.length > 0">
+          <ul>
+            <li
+              class="book-li"
+              v-for="book in BookData"
+              :key="book.id"
+              @click="selected_book(book._id)"
+            >
+              <i :class="['radio',{active: book.isSelected}] " v-show="isEdit">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-check"></use>
+                </svg>
+              </i>
+              <div class="book-layout">
+                <a href="javascript:;">
+                  <img :src="decodeURIComponent((book.cover).replace('/agent/',''))">
+                </a>
+                <div class="book-info">
+                  <div class="book-header">
+                    <div class="book-title">{{book.title}}</div>
+                    <div class="book-title-r">
+                      <span>立即阅读</span>
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-right"></use>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="book-meta">
+                    <svg class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-user"></use>
+                    </svg>
+                    {{book.author}} | 尚未阅读
+                  </div>
+                  <div class="book-to-new">
+                    <span class="dot-red"></span>
+                    <a href="javascript:;">更新至 {{book.lastChapter}}</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div ref="footer" class="footer">
+        <Footer/>
+      </div>
     </div>
-    <div ref="footer" class="footer">
-      <Footer/>
+    <div class="search-page" v-show="isSearch">
+      <Search v-model="isSearch"/>
     </div>
   </div>
 </template>
@@ -85,16 +93,19 @@
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Search from "@/components/search";
 export default {
   data() {
     return {
       isDefaultshelf: false, // 选中默认书架
-      isEdit: false // 是否编辑书架
+      isEdit: false, // 是否编辑书架
+      isSearch: false //是否搜索
     };
   },
   components: {
     Header,
-    Footer
+    Footer,
+    Search
   },
   watch: {
     isEdit(val, old) {
@@ -123,8 +134,8 @@ export default {
     }
   },
   methods: {
-    test() {
-      console.log(1);
+    test(val) {
+      console.log(val);
     },
     selected_book(_id) {
       if (this.isEdit) {

@@ -1,21 +1,6 @@
 <template>
   <div>
-    <header>
-      <div class="search-header">
-        <i class="search-icon">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-search"></use>
-          </svg>
-        </i>
-        <input type="text" ref="search-input" autofocus v-model="keyword">
-        <i class="close-circle-fill-icon" v-show="isCloseFill" @click="click_close_fill">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-close-circle-fill"></use>
-          </svg>
-        </i>
-        <div class="colse">取消</div>
-      </div>
-    </header>
+    <SearchHeader v-model="keywords" :results.sync="results"/>
     <div v-show="!isCloseFill">
       <div class="search-popular">
         <div class="search-title-bar">
@@ -27,8 +12,8 @@
         </div>
         <div class="search-tags">
           <ul>
-            <li @click="click_hot(ietm)" v-for="(ietm ,index) in searchHotWords" :key="index">
-              <a href="javascript:;">{{ietm}}</a>
+            <li @click="click_words(item)" v-for="(item ,index) in searchHotWords" :key="index">
+              <a href="javascript:;">{{item}}</a>
             </li>
           </ul>
         </div>
@@ -43,8 +28,8 @@
         </div>
         <div class="search-tags">
           <ul>
-            <li v-for="(ietm ,index) in SearchHistory" :key="index">
-              <a href="javascript:;">{{ietm}}</a>
+            <li v-for="(item ,index) in SearchHistory" @click="click_words(item)" :key="index">
+              <a href="javascript:;">{{item}}</a>
             </li>
           </ul>
         </div>
@@ -52,14 +37,16 @@
     </div>
     <div class="search-result" v-show="isCloseFill">
       <ul>
-        <li v-for="(item, index) in results" :key="index">
-          <i class="search-icon">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-search"></use>
-            </svg>
-          </i>
-          <p>{{item}}</p>
-        </li>
+        <router-link :to="'/search?kw='+ item" v-for="(item, index) in results" :key="index">
+          <li>
+            <i class="search-icon">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-search"></use>
+              </svg>
+            </i>
+            <p>{{item}}</p>
+          </li>
+        </router-link>
       </ul>
     </div>
   </div>
@@ -68,8 +55,13 @@
 <script>
 import axios from "axios";
 import request from "@/http_";
+import SearchHeader from "@/components/Search-header";
 let temp = [];
 export default {
+  props: ["isSearch"],
+  components: {
+    SearchHeader
+  },
   data() {
     return {
       searchHotWords: [
@@ -84,7 +76,8 @@ export default {
         "魔道祖师",
         "重生之都市仙尊"
       ],
-      keyword: "", // 搜索字符串
+      isSearched: this.isSearch,
+      keywords: "", // 搜索字符串
       isDelShow: false,
       results: [], // 搜索返回列表
       SearchHistory: [], // 搜索历史
@@ -93,34 +86,28 @@ export default {
   },
   computed: {
     isCloseFill() {
-      if (this.keyword.length > 0) return true;
+      if (this.keywords.length > 0) return true;
       return false;
     }
   },
   watch: {
-    keyword(val, old) {
-      if (val == "") {
-        this.results = [];
-        return;
-      }
-      request.get(`/api/auto-complete?query=${this.keyword}`).then(res => {
-        this.results = res.data.keywords;
-      });
+    isSearch(val, old) {
+      this.isSearched = val;
     }
   },
   beforeCreate() {
     // 请求 最新热词
-    // let arr = [];
-    // request.get("/api/search-hotwords").then(res => {
-    //   const data = res.data.searchHotWords;
-    //   data.forEach((item, index) => {
-    //     arr.push(item);
-    //     if (index % 10 == 0) {
-    //       temp.push(arr);
-    //       arr = [];
-    //     }
-    //   });
-    // });
+    let arr = [];
+    request.get(this.$config.SEARCH_HOT_URL).then(res => {
+      const data = res.data.searchHotWords;
+      data.forEach((item, index) => {
+        arr.push(item);
+        if (index % 10 == 0) {
+          temp.push(arr);
+          arr = [];
+        }
+      });
+    });
   },
   created() {
     // this.searchHotWords = temp;
@@ -130,16 +117,13 @@ export default {
     }
   },
   methods: {
-    click_close_fill() {
-      this.keyword = "";
-      this.$refs["search-input"].focus();
-    },
     // 清空全部搜索历史
     click_clear() {
       localStorage.removeItem("SEARCH_HISTORY");
       this.SearchHistory = [];
     },
-    click_hot(word) {
+    click_words(word) {
+      this.keywords = word;
       localStorage.removeItem("SEARCH_HISTORY");
       this.SearchHistory = [
         ...new Set(this.SearchHistory.concat(word.split()))
@@ -151,55 +135,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-header {
-  width: 100%;
-  height: 50px;
-  border-bottom: 1px solid #eee;
-}
-.search-header {
-  margin: 10px;
-  width: calc(100% - 20px);
-  height: 35px;
-  display: flex;
-  position: relative;
-  justify-content: space-between;
-  input {
-    width: calc(100% - 100px);
-    font-size: scalc(35px);
-    font-size: 18px;
-    padding-left: 40px;
-    border: none;
-    border-radius: 5px;
-    font-weight: 100;
-    background: rgb(248, 248, 248);
-  }
-  .search-icon {
-    svg {
-      position: absolute;
-      font-size: 26px;
-      color: #aaa;
-      top: 6px;
-      left: 10px;
-      height: 24px;
-    }
-  }
-  .close-circle-fill-icon {
-    svg {
-      position: absolute;
-      right: 65px;
-      top: 9px;
-      color: #aaa;
-    }
-  }
-  .colse {
-    width: 50px;
-    height: 35px;
-    letter-spacing: 2px;
-    line-height: 35px;
-    text-align: center;
-    font-size: 16px;
-  }
-}
 .search-popular {
   width: 100%;
   margin-top: 10px;
@@ -260,6 +195,11 @@ header {
 }
 .search-result {
   width: 100%;
+  a {
+    text-decoration: none;
+    outline: none;
+    color: black;
+  }
   li {
     width: 100%;
     height: 50px;
@@ -268,6 +208,7 @@ header {
     border-bottom: 1px solid #eee;
     line-height: 50px;
     align-items: baseline;
+    text-decoration: none;
     i {
       margin-left: 15px;
       margin-right: 10px;
