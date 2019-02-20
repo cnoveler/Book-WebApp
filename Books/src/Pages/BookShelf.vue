@@ -107,6 +107,9 @@ export default {
     Footer,
     Search
   },
+  created() {
+    this.isSearch = this.$route.query.isSearch;
+  },
   watch: {
     isEdit(val, old) {
       if (this.BookData.length <= 0) return;
@@ -134,9 +137,6 @@ export default {
     }
   },
   methods: {
-    test(val) {
-      console.log(val);
-    },
     selected_book(_id) {
       if (this.isEdit) {
         const obj = this.BookData.filter(item => {

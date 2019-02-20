@@ -28,8 +28,8 @@
       <div class="book-list">
         <ul>
           <li class="book-li" v-for="item in result" :key="item._id">
-            <a href="javascript:;">
-              <img :src="decodeURIComponent((item.cover).replace('/agent/',''))" alt>
+            <router-link to="javascript:;">
+              <img :src="decodeURIComponent((item.cover).replace('/agent/',''))" :alt="item.title">
               <div class="book-info">
                 <div :class="['book-title',{active:item.title == query}]">
                   <h3>{{item.title}}</h3>
@@ -49,7 +49,7 @@
                   </div>
                 </div>
               </div>
-            </a>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -166,7 +166,7 @@ export default {
   }
   .book-list {
     width: calc(100% - 15px);
-    margin: 100px 0 0 0;
+    margin-top: 100px;
     .book-li {
       width: 100%;
       margin: 10px 0 10px 0;
@@ -190,6 +190,10 @@ export default {
           .book-title {
             position: relative;
             top: 7px;
+            line-height: 1.4;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
           .book-title.active {
             color: #ed424b;

@@ -11,9 +11,13 @@ import mixins from '@/mixins'
 // 全局中引入js 使用 this.$config
 import config from "@/config";
 Vue.prototype.$config = config
-
+// 引入element-ui
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 Vue.config.productionTip = false
 Vue.mixin(mixins)
+// 注册 element-ui
+Vue.use(ElementUI)
 
 
 /* eslint-disable no-new */

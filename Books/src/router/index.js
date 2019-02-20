@@ -5,16 +5,15 @@ import BookShelf from "@/pages/BookShelf";
 import BookShelfHistory from "@/pages/BookShelfHistory";
 import Errors from "@/pages/Error";
 import SearchResult from "@/pages/SearchResult";
-
+import BookDeatils from "@/pages/Books/BookDeatils"
 Vue.use(Router);
 
 export default new Router({
   mode: "history",
-  routes: [
-    {
+  routes: [{
       path: "/",
-      name: "Home",
-      component: Home
+      name: "BookDeatils",
+      component: BookDeatils
     },
     {
       path: "/bookshelf/my",
@@ -30,11 +29,9 @@ export default new Router({
       path: "/search",
       name: "SearchResult",
       component: SearchResult,
-      children: [
-        {
-          path: ":kw"
-        }
-      ]
+      children: [{
+        path: ":kw"
+      }]
     },
     {
       path: "*",

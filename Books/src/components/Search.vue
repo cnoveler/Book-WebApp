@@ -38,7 +38,7 @@
     <div class="search-result" v-show="isCloseFill">
       <ul>
         <router-link :to="'/search?kw='+ item" v-for="(item, index) in results" :key="index">
-          <li>
+          <li @click="click_words(item)">
             <i class="search-icon">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-search"></use>

@@ -13,7 +13,9 @@
             <use xlink:href="#icon-close-circle-fill"></use>
           </svg>
         </i>
-        <div class="colse" @click="click_close">取消</div>
+        <div class="colse" @click="click_close">
+          <router-link to="/">取消</router-link>
+        </div>
       </div>
     </header>
   </div>
@@ -61,9 +63,7 @@ export default {
       this.$refs["search-input"].focus();
     },
     click_close() {
-      this.isSearched = false;
-      history.back(-1);
-      return this.$emit("input", this.isSearched);
+      // return this.$emit("input", false);
     }
   }
 };
@@ -124,6 +124,11 @@ header {
     text-align: center;
     font-size: 16px;
     cursor: pointer;
+    a {
+      text-decoration: none;
+      outline: none;
+      color: black;
+    }
   }
 }
 </style>

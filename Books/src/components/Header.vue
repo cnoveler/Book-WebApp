@@ -8,6 +8,7 @@
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-left"></use>
             </svg>
+            <slot name="left-text"></slot>
           </div>
         </slot>
         <slot name="header-content">
