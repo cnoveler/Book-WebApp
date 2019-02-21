@@ -113,7 +113,7 @@ header {
   width: 100%;
   height: 50px;
   border-bottom: 1px solid #eee;
-  background: #fff;
+  // background: #fff;
   .header {
     width: 100%;
     height: 50px;

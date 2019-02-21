@@ -15,6 +15,9 @@
           </div>
           <div class="book-author">
             <a href="javascript:;">忘川三途</a>
+            <span>
+              <i>Lv.4</i>
+            </span>
           </div>
           <div class="rate">
             <el-rate
@@ -63,31 +66,77 @@
         </div>
       </div>
     </div>
-    <div class="modul">
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span class="title">书友评价</span>
-          <small>共111条评论</small>
-          <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
-        </div>
-        <ul class="book-reviews">
-          <li>
+    <article>
+      <div class="modul">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span class="title">书友评价</span>
+            <small>共111条评论</small>
+            <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
+          </div>
+          <ul class="book-reviews">
+            <li>
+              <div class="author-cover">
+                <img
+                  src="http://statics.zhuishushenqi.com/avatar/37/55/3755b7f598fb7f4ebf06b89287f1a8cb"
+                  alt
+                >
+              </div>
+              <div class="author-info">
+                <div class="nickname">看见维护🐶就想骂</div>
+                <el-rate v-model="value" disabled></el-rate>
+                <div class="author-content">求大神写一本重生仙逆的书 这本仙逆我都看了十几变了 还是觉得好看 求大神一定要看到 你写的书真的太好看了 拜托了</div>
+                <div class="updated">2019-01-12 12:08:40</div>
+              </div>
+            </li>
+          </ul>
+        </el-card>
+      </div>
+    </article>
+    <article>
+      <div class="modul">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span class="title">本书作者</span>
+            <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
+          </div>
+          <div class="book-x-author">
             <div class="author-cover">
-              <img
-                src="http://statics.zhuishushenqi.com/avatar/37/55/3755b7f598fb7f4ebf06b89287f1a8cb"
-                alt
-              >
+              <img src="//facepic.qidian.com/qd_face/349573/a402632010/0" alt>
+              <span>
+                <i>Lv.4</i>
+              </span>
             </div>
-            <div class="author-info">
-              <div class="nickname">看见维护🐶就想骂</div>
-              <el-rate v-model="value" disabled></el-rate>
-              <div class="author-content">求大神写一本重生仙逆的书 这本仙逆我都看了十几变了 还是觉得好看 求大神一定要看到 你写的书真的太好看了 拜托了</div>
-              <div class="updated">2019-01-12 12:08:40</div>
+            <div class="author-meta">
+              <div class="author-title">
+                <h3>鱼跃冲顶</h3>
+                <p class="book-desc">暂无作者简介</p>
+              </div>
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-right"></use>
+              </svg>
             </div>
-          </li>
-        </ul>
-      </el-card>
-    </div>
+          </div>
+        </el-card>
+      </div>
+    </article>
+    <article>
+      <div class="modul">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span class="title">本书标签</span>
+            <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
+          </div>
+          <div class="book-x-tags">
+            <el-tag>孤儿</el-tag>
+            <el-tag type="success">技术流</el-tag>
+            <el-tag type="info">霸道</el-tag>
+            <el-tag type="warning">扮猪吃老虎</el-tag>
+            <el-tag type="danger">后宫</el-tag>
+          </div>
+        </el-card>
+      </div>
+    </article>
     <footer>
       <Footer/>
     </footer>
@@ -158,15 +207,32 @@ header {
         text-overflow: ellipsis;
       }
       .book-author {
+        display: flex;
+        align-items: baseline;
         a {
           text-decoration: none;
           outline: none;
           color: #aaa;
         }
+        span {
+          transform: scale(0.7);
+          background: #f0643a;
+          border: none;
+          color: #fff;
+          display: inline-block;
+          width: 20px;
+          height: 8px;
+          border-radius: 2px;
+          font-size: 12px;
+          text-align: center;
+          line-height: 8px;
+          font-weight: 500;
+          padding: 5px;
+        }
       }
-      .rate {
-        margin-bottom: 10px;
-      }
+      // .rate {
+      //   margin-bottom: 10px;
+      // }
       .book-cat {
         letter-spacing: 1px;
       }
@@ -247,6 +313,52 @@ header {
 }
 .modul {
   margin: 10px 0 10px 0;
+  .box-card {
+    .book-x-author {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .author-cover {
+        position: relative;
+        img {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+        }
+        span {
+          position: absolute;
+          background: #f0643a;
+          border: none;
+          left: 2px;
+          bottom: 3px;
+          color: #fff;
+          width: 35px;
+          height: 10px;
+          border-radius: 20px;
+          font-size: 12px;
+          text-align: center;
+          line-height: 10px;
+          font-weight: 500;
+          padding: 5px;
+        }
+      }
+      .author-meta {
+        margin-left: 10px;
+        width: calc(100% - 50px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .book-desc {
+          margin-top: 5px;
+          color: #ccc;
+          font-size: 14px;
+        }
+        svg {
+          color: #aaa;
+        }
+      }
+    }
+  }
   .clearfix {
     .title {
       font-size: 16px;
@@ -264,6 +376,7 @@ header {
     li {
       display: flex;
       width: 100%;
+      border-bottom: 1px solid #f0f1f2;
       .author-cover {
         position: relative;
         top: 10px;
@@ -277,6 +390,8 @@ header {
         width: calc(100% - 50px);
         margin-left: 10px;
         font-size: 14px;
+        padding-bottom: 10px;
+
         div {
           margin-top: 5px;
         }
