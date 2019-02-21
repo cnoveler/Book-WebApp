@@ -12,8 +12,8 @@ export default new Router({
   mode: "history",
   routes: [{
       path: "/",
-      name: "BookDeatils",
-      component: BookDeatils
+      name: "Home",
+      component: Home
     },
     {
       path: "/bookshelf/my",
@@ -31,6 +31,14 @@ export default new Router({
       component: SearchResult,
       children: [{
         path: ":kw"
+      }]
+    },
+    {
+      path: "/book",
+      name: "BookDeatils",
+      component: BookDeatils,
+      children: [{
+        path: ':id',
       }]
     },
     {

@@ -2,30 +2,30 @@
   <div class="bookdetails">
     <header>
       <Header>
-        <span class="left-header-text" slot="left-text">武神大主播</span>
+        <span class="left-header-text" slot="left-text">{{bookInfo.title}}</span>
         <p slot="header-content"></p>
       </Header>
       <div class="book-info">
         <div class="book-cover">
-          <img src="//bookcover.yuewen.com/qdbimg/349573/1011879207/300" alt>
+          <img :src="authorCover" alt>
         </div>
         <div class="book-meta">
           <div class="book-title">
-            <h3>重生之武神大主播</h3>
+            <h3>{{bookInfo.title}}</h3>
           </div>
           <div class="book-author">
-            <a href="javascript:;">忘川三途</a>
+            <a href="javascript:;">{{bookInfo.author}}</a>
             <span>
               <i>Lv.4</i>
             </span>
           </div>
           <div class="rate">
             <el-rate
-              v-model="value"
+              v-model="rateValue"
               disabled
               show-score
               text-color="#ff9900"
-              score-template="{value}分"
+              :score-template="rateValue * 2 + '分'"
             ></el-rate>
             <!-- <span class="span-text">5.8分/95人评过</span> -->
           </div>
@@ -34,30 +34,27 @@
             <div class="hollow" :style="style">★★★★★</div>
             <span class="span-text">5.8分/95人评过</span>
           </div>-->
-          <div class="book-cat">玄幻/东方玄幻</div>
+          <div class="book-cat">{{bookInfo.majorCate}}/{{bookInfo.minorCate}}</div>
           <div class="book-count-status">
-            <div class="book-word-count">118.23万字|</div>
-            <div class="book-status">连载</div>
+            <div class="book-word-count">{{parseInt(bookInfo.wordCount / 10000 *10)/10 + "万字|"}}</div>
+            <div class="book-status">{{bookInfo.isSerial==true?"连载":"完本"}}</div>
           </div>
         </div>
       </div>
       <div class="btn">
         <el-button size="medium " class="btn-red">点击阅读</el-button>
-        <el-button size="medium " disabled plain>加入书架</el-button>
+        <el-button size="medium " plain>加入书架</el-button>
         <el-button size="medium " plain>VIP订阅</el-button>
       </div>
     </header>
     <div class="content">
       <div class="books-intro">
-        <el-card
-          class="box-card"
-          shadow="never"
-        >钟离重生了，重生到了十年之前，那并不美好的学生时代。那时诸神未临，百王未醒，地球还未沦为宇宙杀戮的战场，尘封于远古遗迹之中的武道众圣也未复苏。而他，却回来了，带着未来科技的完美结晶，承载人族武道传承的武神智脑，回到了这大世将启的十年之前。在百慕大三角力搏深海巨兽在撒拉哈沙漠探寻古神遗迹在法老金字塔灭杀远古亡灵在浩瀚宇宙中决战星空诸神……扶大厦之将倾，挽狂澜于即倒。这一世，不留遗憾，只手擎天！</el-card>
+        <el-card class="box-card" shadow="never">{{bookInfo.longIntro}}</el-card>
         <div class="book-directory">
           <a href="javascript:;">
             <p>目录</p>
             <div class="right-text">
-              <span>11小时前·连载至永夜之王旗飞扬 终章 美丽新世界</span>
+              <span>{{bookupdated}}·{{bookInfo.isSerial==true?"连载":"完本"}}至{{bookInfo.lastChapter}}</span>
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-right"></use>
               </svg>
@@ -71,11 +68,11 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span class="title">书友评价</span>
-            <small>共111条评论</small>
+            <small>共{{reviewDataLen}}条评论</small>
             <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
           </div>
           <ul class="book-reviews">
-            <li>
+            <li v-for="(item, index) in reviewData.docs" :key="index">
               <div class="author-cover">
                 <img
                   src="http://statics.zhuishushenqi.com/avatar/37/55/3755b7f598fb7f4ebf06b89287f1a8cb"
@@ -83,10 +80,12 @@
                 >
               </div>
               <div class="author-info">
-                <div class="nickname">看见维护🐶就想骂</div>
-                <el-rate v-model="value" disabled></el-rate>
-                <div class="author-content">求大神写一本重生仙逆的书 这本仙逆我都看了十几变了 还是觉得好看 求大神一定要看到 你写的书真的太好看了 拜托了</div>
-                <div class="updated">2019-01-12 12:08:40</div>
+                <div class="nickname">{{item.author.nickname}}</div>
+                <el-rate v-model="item.rating" disabled></el-rate>
+                <div class="author-content">{{item.content}}</div>
+                <div
+                  class="updated"
+                >{{formatDate(item.updated).slice(0,3).join('-')+" "+formatDate(item.updated).slice(3,6).join(':')}}</div>
               </div>
             </li>
           </ul>
@@ -102,14 +101,14 @@
           </div>
           <div class="book-x-author">
             <div class="author-cover">
-              <img src="//facepic.qidian.com/qd_face/349573/a402632010/0" alt>
+              <img :src="authorCover" alt>
               <span>
                 <i>Lv.4</i>
               </span>
             </div>
             <div class="author-meta">
               <div class="author-title">
-                <h3>鱼跃冲顶</h3>
+                <h3>{{bookInfo.author}}</h3>
                 <p class="book-desc">暂无作者简介</p>
               </div>
               <svg class="icon" aria-hidden="true">
@@ -121,18 +120,19 @@
       </div>
     </article>
     <article>
-      <div class="modul">
+      <div class="modul" v-if="tagLen.length >0">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span class="title">本书标签</span>
             <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
           </div>
           <div class="book-x-tags">
-            <el-tag>孤儿</el-tag>
-            <el-tag type="success">技术流</el-tag>
-            <el-tag type="info">霸道</el-tag>
-            <el-tag type="warning">扮猪吃老虎</el-tag>
-            <el-tag type="danger">后宫</el-tag>
+            <el-tag
+              class="tags"
+              :type="tagsType[Math.floor(Math.random() * 4 + 1)]"
+              v-for="(item, index) in bookInfo.tags"
+              :key="index"
+            >{{item}}</el-tag>
           </div>
         </el-card>
       </div>
@@ -147,10 +147,20 @@
 import Header from "@/components/Header";
 // import Search from "@/components/Search";
 import Footer from "@/components/Footer";
+import request from "@/http_";
 export default {
   data() {
     return {
-      value: 3.5
+      rateValue: null,
+      bookid: null,
+      bookInfo: [],
+      updatedt: [],
+      value: 4.5,
+      tagsType: ["default", "success", "info", "warning", "danger"], // 书籍标签el-ui 的不同属性
+      authorCover: null, // 书籍封面
+      reviewData: [], // 书籍短评
+      reviewDataLen: null, // 书籍短评数量
+      tagLen: [] // 书籍标签数量
     };
   },
   components: {
@@ -161,6 +171,67 @@ export default {
   computed: {
     style() {
       return `width:${5.8 / 2.5}rem`;
+    },
+    bookupdated() {
+      // 书籍更新时间
+      if (this.updatedt.length <= 0) return;
+      const [d, h, m] = this.updatedt;
+      if (d > 0) return `${d}天前`;
+      if (h > 0) return `${h}小时前`;
+      if (m > 0) return `${m}分钟前`;
+    },
+    formatshorttime() {
+      // 短评时间
+      this.formatDate();
+    }
+  },
+  created() {
+    this.bookid = this.$route.params.id;
+    this.getBookInfo();
+    this.getShortReviews();
+  },
+  methods: {
+    // 时间格式话
+    formatDate(t) {
+      const [T, Z] = t
+        .replace("T", " ")
+        .replace("Z", " ")
+        .split(" ");
+      const [Y, M, D] = T.split("-");
+      const [h, m, s] = Z.split(".")[0].split(":");
+      return [
+        parseInt(Y),
+        parseInt(M) - 1,
+        parseInt(D),
+        parseInt(h) + 8,
+        parseInt(m),
+        parseInt(s)
+      ];
+    },
+    // 获取书籍短评
+    getShortReviews() {
+      request.get(this.$config.BOOK_SHORT_REVIEWS + this.bookid).then(res => {
+        this.reviewData = res.data;
+        this.reviewDataLen = res.data.docs.length;
+      });
+    },
+    // 获取书籍信息s
+    getBookInfo() {
+      request.get(this.$config.BOOK_INFO_URL + this.bookid).then(res => {
+        this.bookInfo = res.data;
+        this.rateValue = parseInt(res.data.rating.score * 10) / 10 / 2;
+        const date = new Date(...this.formatDate(res.data.updated));
+        const newDate = new Date();
+        const t = (newDate - date) / 1000;
+        const d = parseInt(t / 86400);
+        const hh = parseInt((t % 86400) / 3600);
+        const mm = parseInt(((t % 86400) % 3600) / 60);
+        this.updatedt = [d, hh, mm];
+        this.authorCover = decodeURIComponent(
+          res.data.cover.replace("/agent/", "")
+        );
+        this.tagLen = res.data.tags;
+      });
     }
   }
 };
@@ -171,8 +242,8 @@ export default {
   background: #f6f7f9;
 }
 header {
-  background: rgba(242, 236, 230, 0.4);
-  background: -webkit-linear-gradient(rgba(242, 236, 230, 0.4), #fff);
+  // background: rgba(242, 236, 230, 0.4);
+  background: -webkit-linear-gradient(#f4f5f6, #fff);
   height: 330px;
   .left-header-text {
     font-size: 16px;
@@ -314,6 +385,12 @@ header {
 .modul {
   margin: 10px 0 10px 0;
   .box-card {
+    .book-x-tags {
+      display: flex;
+      .tags {
+        margin-left: 5px;
+      }
+    }
     .book-x-author {
       display: flex;
       align-items: center;
