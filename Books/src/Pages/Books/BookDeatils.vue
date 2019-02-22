@@ -43,7 +43,21 @@
       </div>
       <div class="btn">
         <el-button size="medium " class="btn-red">点击阅读</el-button>
-        <el-button size="medium " plain>加入书架</el-button>
+        <el-button
+          v-if="isBtnDisabled"
+          ref="btn-add-book"
+          size="medium"
+          @click="add_bookdata(bookInfo)"
+          disabled
+          plain
+        >加入书架</el-button>
+        <el-button
+          v-if="!isBtnDisabled"
+          ref="btn-add-book"
+          size="medium"
+          @click="add_bookdata(bookInfo)"
+          plain
+        >加入书架</el-button>
         <el-button size="medium " plain>VIP订阅</el-button>
       </div>
     </header>
@@ -72,12 +86,9 @@
             <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
           </div>
           <ul class="book-reviews">
-            <li v-for="(item, index) in reviewData.docs" :key="index">
+            <li v-for="(item, index) in reviewData" :key="index">
               <div class="author-cover">
-                <img
-                  src="http://statics.zhuishushenqi.com/avatar/37/55/3755b7f598fb7f4ebf06b89287f1a8cb"
-                  alt
-                >
+                <img :src="$config.BASE_STATIC_URL + item.author.avatar" alt>
               </div>
               <div class="author-info">
                 <div class="nickname">{{item.author.nickname}}</div>
@@ -87,6 +98,9 @@
                   class="updated"
                 >{{formatDate(item.updated).slice(0,3).join('-')+" "+formatDate(item.updated).slice(3,6).join(':')}}</div>
               </div>
+            </li>
+            <li class="more" v-show="reviewDataLen !== null">
+              <a href="javascript:;">更多书评</a>
             </li>
           </ul>
         </el-card>
@@ -107,13 +121,15 @@
               </span>
             </div>
             <div class="author-meta">
-              <div class="author-title">
-                <h3>{{bookInfo.author}}</h3>
-                <p class="book-desc">暂无作者简介</p>
-              </div>
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-right"></use>
-              </svg>
+              <a href="javascript:;">
+                <div class="author-title">
+                  <h3>{{bookInfo.author}}</h3>
+                  <p class="book-desc">暂无作者简介</p>
+                </div>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-right"></use>
+                </svg>
+              </a>
             </div>
           </div>
         </el-card>
@@ -160,7 +176,8 @@ export default {
       authorCover: null, // 书籍封面
       reviewData: [], // 书籍短评
       reviewDataLen: null, // 书籍短评数量
-      tagLen: [] // 书籍标签数量
+      tagLen: [], // 书籍标签数量
+      isBtnDisabled: false
     };
   },
   components: {
@@ -190,7 +207,32 @@ export default {
     this.getBookInfo();
     this.getShortReviews();
   },
+  mounted() {
+    this.isTheBookIn();
+  },
   methods: {
+    // 检测书架是否包含当前书籍
+    isTheBookIn() {
+      const obj = this.BookData.filter(item => {
+        return item._id == this.bookid;
+      });
+      if (obj.length > 0) {
+        this.isBtnDisabled = true;
+        return true;
+      }
+      return false;
+    },
+    // 添加书架
+    add_bookdata(book) {
+      let data = JSON.parse(localStorage.getItem("book-data"));
+      if (data == null) {
+        data = [];
+      }
+      book.isSelected = false;
+      this.isBtnDisabled = true;
+      data.push(book);
+      localStorage.setItem("book-data", JSON.stringify(data));
+    },
     // 时间格式话
     formatDate(t) {
       const [T, Z] = t
@@ -209,29 +251,31 @@ export default {
       ];
     },
     // 获取书籍短评
-    getShortReviews() {
-      request.get(this.$config.BOOK_SHORT_REVIEWS + this.bookid).then(res => {
-        this.reviewData = res.data;
-        this.reviewDataLen = res.data.docs.length;
-      });
+    async getShortReviews() {
+      const res = await request.get(
+        this.$config.BOOK_SHORT_REVIEWS + this.bookid
+      );
+      this.reviewData = res.data.docs.slice(0, 5);
+      this.reviewDataLen = res.data.docs.length;
     },
     // 获取书籍信息s
-    getBookInfo() {
-      request.get(this.$config.BOOK_INFO_URL + this.bookid).then(res => {
-        this.bookInfo = res.data;
-        this.rateValue = parseInt(res.data.rating.score * 10) / 10 / 2;
-        const date = new Date(...this.formatDate(res.data.updated));
-        const newDate = new Date();
-        const t = (newDate - date) / 1000;
-        const d = parseInt(t / 86400);
-        const hh = parseInt((t % 86400) / 3600);
-        const mm = parseInt(((t % 86400) % 3600) / 60);
-        this.updatedt = [d, hh, mm];
-        this.authorCover = decodeURIComponent(
-          res.data.cover.replace("/agent/", "")
-        );
-        this.tagLen = res.data.tags;
-      });
+    async getBookInfo() {
+      const result = await request.get(
+        this.$config.BOOK_INFO_URL + this.bookid
+      );
+      this.bookInfo = result.data;
+      this.rateValue = parseInt(result.data.rating.score * 10) / 10 / 2;
+      const date = new Date(...this.formatDate(result.data.updated));
+      const newDate = new Date();
+      const t = (newDate - date) / 1000;
+      const d = parseInt(t / 86400);
+      const hh = parseInt((t % 86400) / 3600);
+      const mm = parseInt(((t % 86400) % 3600) / 60);
+      this.updatedt = [d, hh, mm];
+      this.authorCover = decodeURIComponent(
+        result.data.cover.replace("/agent/", "")
+      );
+      this.tagLen = result.data.tags;
     }
   }
 };
@@ -420,18 +464,23 @@ header {
         }
       }
       .author-meta {
+        width: 100%;
         margin-left: 10px;
         width: calc(100% - 50px);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        .book-desc {
-          margin-top: 5px;
-          color: #ccc;
-          font-size: 14px;
-        }
-        svg {
-          color: #aaa;
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          text-decoration: none;
+          color: black;
+          .book-desc {
+            margin-top: 5px;
+            color: #ccc;
+            font-size: 14px;
+          }
+          svg {
+            color: #aaa;
+          }
         }
       }
     }
@@ -449,6 +498,19 @@ header {
     ul,
     li {
       list-style: none;
+    }
+    .more {
+      a {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        text-decoration: none;
+        font-size: 14px;
+        align-items: center;
+        letter-spacing: 1px;
+        color: #4284ed;
+      }
     }
     li {
       display: flex;

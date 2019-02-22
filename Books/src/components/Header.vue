@@ -202,13 +202,14 @@ header {
   .mask {
     position: absolute;
     width: 100%;
+    z-index: 99;
     height: calc(100% - 50px);
     background: rgba(0, 0, 0, 0.3);
   }
   .header-content {
+    z-index: 99;
     width: 100%;
     position: absolute;
-    z-index: 2;
     background: #fff;
     ul,
     li {

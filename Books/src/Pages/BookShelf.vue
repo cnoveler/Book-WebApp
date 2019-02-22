@@ -71,8 +71,11 @@
                     {{book.author}} | 尚未阅读
                   </div>
                   <div class="book-to-new">
-                    <span class="dot-red"></span>
-                    <a href="javascript:;">更新至 {{book.lastChapter}}</a>
+                    <div class="left-text">
+                      <span class="dot-red"></span>
+                      <a href="javascript:;">更新至 {{book.lastChapter}}</a>
+                    </div>
+                    <span class="updatedtime" v-if="!isEdit">{{formatDate(book.updated)}}</span>
                   </div>
                 </div>
               </div>
@@ -99,7 +102,8 @@ export default {
     return {
       isDefaultshelf: false, // 选中默认书架
       isEdit: false, // 是否编辑书架
-      isSearch: false //是否搜索
+      isSearch: false, //是否搜索
+      updatedt: []
     };
   },
   components: {
@@ -130,6 +134,14 @@ export default {
     }
   },
   computed: {
+    bookupdated() {
+      // 书籍更新时间
+      if (this.updatedt.length <= 0) return;
+      const [d, h, m] = this.updatedt;
+      if (d > 0) return `${d}天前`;
+      if (h > 0) return `${h}小时前`;
+      if (m > 0) return `${m}分钟前`;
+    },
     selected() {
       const obj = this.BookData.filter(item => item.isSelected === true);
       if (obj.length > 0) return true;
@@ -137,6 +149,33 @@ export default {
     }
   },
   methods: {
+    // 时间格式话
+    formatDate(t) {
+      const [T, Z] = t
+        .replace("T", " ")
+        .replace("Z", " ")
+        .split(" ");
+      const [Y, M, D] = T.split("-");
+      const [h, m, s] = Z.split(".")[0].split(":");
+      const date = new Date(
+        ...[
+          parseInt(Y),
+          parseInt(M) - 1,
+          parseInt(D),
+          parseInt(h) + 8,
+          parseInt(m),
+          parseInt(s)
+        ]
+      );
+      const newDate = new Date();
+      const tt = (newDate - date) / 1000;
+      const d = parseInt(tt / 86400);
+      const hh = parseInt((tt % 86400) / 3600);
+      const mm = parseInt(((tt % 86400) % 3600) / 60);
+      if (d > 0) return `${d}天前`;
+      if (hh > 0) return `${h}小时前`;
+      if (mm > 0) return `${m}分钟前`;
+    },
     selected_book(_id) {
       if (this.isEdit) {
         const obj = this.BookData.filter(item => {
@@ -204,6 +243,7 @@ export default {
     list-style: none;
   }
   .list {
+    z-index: 99;
     position: fixed;
     width: 100%;
     bottom: 0;
@@ -227,6 +267,7 @@ export default {
   content: "";
   position: fixed;
   width: 100%;
+  z-index: 99;
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
 }
@@ -291,11 +332,12 @@ export default {
           font-weight: 200;
           .book-title {
             font-weight: 600;
+            letter-spacing: 0.5px;
           }
           .book-title-r {
+            width: 100px;
             font-size: 14px;
             color: #bbb;
-            margin-right: 10px;
             svg {
               margin-left: -3px;
             }
@@ -308,23 +350,35 @@ export default {
           white-space: nowrap;
         }
         .book-to-new {
+          width: 100%;
           display: flex;
           margin-top: 10px;
           align-items: center;
-          .dot-red {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: red;
-            margin: 0 2px 0 2px;
-          }
-          a {
-            color: #bbb;
-            width: 240px;
+          justify-content: space-between;
+          .left-text {
+            position: relative;
+            width: 70%;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             letter-spacing: 0.5px;
+            .dot-red {
+              position: absolute;
+              left: -3px;
+              top: 2px;
+              width: 5px;
+              height: 5px;
+              border-radius: 50%;
+              background: red;
+              margin: 0 2px 0 2px;
+            }
+            a {
+              color: #bbb;
+            }
+          }
+          .updatedtime {
+            font-size: 12px;
+            color: #bbb;
           }
         }
       }
