@@ -6,6 +6,7 @@ import BookShelfHistory from "@/pages/BookShelfHistory";
 import Errors from "@/pages/Error";
 import SearchResult from "@/pages/SearchResult";
 import BookDeatils from "@/pages/Books/BookDeatils"
+import BookChapter from "@/pages/Books/BookChapter"
 Vue.use(Router);
 
 export default new Router({
@@ -34,12 +35,13 @@ export default new Router({
       }]
     },
     {
-      path: "/book",
+      path: "/book/:id",
       name: "BookDeatils",
       component: BookDeatils,
-      children: [{
-        path: ':id',
-      }]
+    },
+    {
+      path: '/book/:id/catalog',
+      component: BookChapter
     },
     {
       path: "*",

@@ -68,7 +68,7 @@
           <a href="javascript:;">
             <p>目录</p>
             <div class="right-text">
-              <span>{{bookupdated}}·{{bookInfo.isSerial==true?"连载":"完本"}}至{{bookInfo.lastChapter}}</span>
+              <span>{{bookupdated}} · {{bookInfo.isSerial==true?"连载":"完本"}}至{{bookInfo.lastChapter}}</span>
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-right"></use>
               </svg>
@@ -288,7 +288,7 @@ export default {
 header {
   // background: rgba(242, 236, 230, 0.4);
   background: -webkit-linear-gradient(#f4f5f6, #fff);
-  height: 330px;
+  height: 280px;
   .left-header-text {
     font-size: 16px;
     font-weight: 100;
