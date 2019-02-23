@@ -297,7 +297,8 @@ header {
     width: calc(100% - 30px);
     display: flex;
     height: 200px;
-    margin-top: 20px;
+    z-index: 1;
+    margin-top: 50px;
     padding-left: 10px;
     padding-right: 10px;
     align-items: center;

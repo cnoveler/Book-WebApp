@@ -28,7 +28,7 @@
       <div class="book-list">
         <ul>
           <li class="book-li" v-for="item in result" :key="item._id">
-            <router-link to="javascript:;">
+            <a @click="click_book(item._id)">
               <img :src="decodeURIComponent((item.cover).replace('/agent/',''))" :alt="item.title">
               <div class="book-info">
                 <div :class="['book-title',{active:item.title == query}]">
@@ -49,7 +49,7 @@
                   </div>
                 </div>
               </div>
-            </router-link>
+            </a>
           </li>
         </ul>
       </div>
@@ -88,6 +88,11 @@ export default {
     request.get(this.$config.SEARCH_KEWORD_RESULT + this.query).then(res => {
       this.result = res.data.books;
     });
+  },
+  methods: {
+    click_book(_id) {
+      this.$router.push(`/book/${_id}`);
+    }
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchHeader v-model="keywords" :results.sync="results"/>
+    <SearchHeader v-model="keywords" :results.sync="results" :isSearched.sync="isSearched"/>
     <div v-show="!isCloseFill">
       <div class="search-popular">
         <div class="search-title-bar">
@@ -58,7 +58,7 @@ import request from "@/http_";
 import SearchHeader from "@/components/Search-header";
 let temp = [];
 export default {
-  props: ["isSearch"],
+  props: ["value"],
   components: {
     SearchHeader
   },
@@ -91,8 +91,11 @@ export default {
     }
   },
   watch: {
-    isSearch(val, old) {
+    value(val, old) {
       this.isSearched = val;
+    },
+    isSearched(val) {
+      this.$emit("input", val);
     }
   },
   beforeCreate() {

@@ -26,7 +26,7 @@
         </div>
       </transition>
       <Header v-show="!isEdit" v-model="isSearch" isHis="bookshelf"/>
-      <div class="content">
+      <div class="content" ref="content">
         <div class="my-default-header" v-show="!isEdit">
           <div class="default-selected" @click="isDefaultshelf=!isDefaultshelf">
             <span class="title">默认书架({{BookData.length}})</span>
@@ -111,16 +111,15 @@ export default {
     Footer,
     Search
   },
-  created() {
-    this.isSearch = this.$route.query.isSearch;
-  },
   watch: {
     isEdit(val, old) {
       if (this.BookData.length <= 0) return;
       if (val) {
+        this.$refs["content"].style.marginTop = 0;
         this.$refs["book-list"].style.marginTop = "50px";
       } else {
         this.$refs["book-list"].style.marginTop = "0px";
+        this.$refs["content"].style.marginTop = "50px";
       }
       this.BookData.map(item => (item.isSelected = false));
     },
@@ -183,7 +182,8 @@ export default {
             return (item.isSelected = !item.isSelected);
           }
         });
-        // console.log(obj);
+      } else {
+        this.$router.push(`/book/${_id}`);
       }
     },
     checkall() {
@@ -206,6 +206,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-top: 50px;
   .my-default-header {
     display: flex;
     margin: 10px;

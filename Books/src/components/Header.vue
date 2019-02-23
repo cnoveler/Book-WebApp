@@ -110,8 +110,11 @@ export default {
 
 <style lang="scss" scoped >
 header {
+  position: fixed;
+  top: 0;
   width: 100%;
   height: 50px;
+  z-index: 99;
   border-bottom: 1px solid #eee;
   // background: #fff;
   .header {
@@ -119,6 +122,7 @@ header {
     height: 50px;
     display: flex;
     // border-bottom: 1px solid #ccc;
+    background: #f4f5f6;
     justify-content: space-between;
     align-items: center;
     -moz-user-select: none; /* Firefox私有属性 */
@@ -200,10 +204,10 @@ header {
     }
   }
   .mask {
-    position: absolute;
+    position: fixed;
     width: 100%;
-    z-index: 99;
-    height: calc(100% - 50px);
+    z-index: 1;
+    height: 100%;
     background: rgba(0, 0, 0, 0.3);
   }
   .header-content {

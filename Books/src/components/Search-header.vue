@@ -14,7 +14,8 @@
           </svg>
         </i>
         <div class="colse" @click="click_close">
-          <router-link to="/">取消</router-link>
+          <!-- <router-link to="/bookshelf/my">取消</router-link> -->
+          取消
         </div>
       </div>
     </header>
@@ -28,7 +29,8 @@ export default {
   data() {
     return {
       keyword: "", // 搜索字符串
-      results: [] // 搜索返回列表
+      results: [], // 搜索返回列表
+      isSearch: ""
     };
   },
   watch: {
@@ -63,7 +65,11 @@ export default {
       this.$refs["search-input"].focus();
     },
     click_close() {
-      // return this.$emit("input", false);
+      // console.log(this.$route);
+      if (this.$route.fullPath == "/bookshelf/my") {
+        return this.$emit("update:isSearched", false);
+      }
+      this.$router.push("/bookshelf/my");
     }
   }
 };
