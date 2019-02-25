@@ -2,6 +2,7 @@
 const BASE_URL = "/api"
 const BASE_URL_V2 = "/zhuishu"
 const BASE_STATIC_URL = "http://statics.zhuishushenqi.com" // 默认请求 静态资源地址
+const BASE_CHAPTER_CONTENT = "/chapter" // 获取章节内容
 
 // https://novel.juhe.im/
 const BOOK_SHORT_REVIEWS = BASE_URL + "/book/short-reviews?book=" // 书籍短评
@@ -21,5 +22,6 @@ export default {
   SEARCH_KEWORD_RESULT,
   BOOK_INFO_URL,
   BOOK_SHORT_REVIEWS,
-  BOOK_CHAPTERS_URL
+  BOOK_CHAPTERS_URL,
+  BASE_CHAPTER_CONTENT
 }

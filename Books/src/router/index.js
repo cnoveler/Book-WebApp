@@ -7,6 +7,7 @@ import Errors from "@/pages/Error";
 import SearchResult from "@/pages/SearchResult";
 import BookDeatils from "@/pages/Books/BookDeatils"
 import BookChapter from "@/pages/Books/BookChapter"
+import BookContent from "@/pages/Books/BookContent"
 Vue.use(Router);
 
 export default new Router({
@@ -41,7 +42,13 @@ export default new Router({
     },
     {
       path: '/book/:id/catalog',
+      name: 'BookChapter',
       component: BookChapter
+    },
+    {
+      path: '/book/:id/read',
+      name: 'BookContent',
+      component: BookContent
     },
     {
       path: "*",

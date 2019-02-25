@@ -68,7 +68,7 @@
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-user"></use>
                     </svg>
-                    {{book.author}} | 尚未阅读
+                    {{book.author}} | {{isReadName}}
                   </div>
                   <div class="book-to-new">
                     <div class="left-text">
@@ -133,6 +133,20 @@ export default {
     }
   },
   computed: {
+    // 检测是否有阅读历史
+    isReadName() {
+      const data = JSON.parse(localStorage.getItem("book-data"));
+      if (data.length > 0) {
+        const temp = data.filter((item, index) => {
+          return item.RName;
+        });
+        if (temp.length > 0) {
+          return temp[0].RName;
+        } else {
+          return "尚未阅读";
+        }
+      }
+    },
     bookupdated() {
       // 书籍更新时间
       if (this.updatedt.length <= 0) return;

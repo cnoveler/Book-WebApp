@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="isLoadings">
     <div class="header">
       <Header>
         <span class="left-header-text" slot="left-text">重生武神大主播</span>
@@ -15,7 +15,7 @@
         <div class="tab-content" v-if="isDir">
           <div class="module-header">
             <h4>共{{chapterList.chaptersCount1}}章</h4>
-            <span @click="ReverseOrder">倒序</span>
+            <span @click="isOrder=!isOrder">{{isOrder? '倒序':'正序'}}</span>
           </div>
           <div class="chapter-list">
             <ul>
@@ -23,14 +23,19 @@
               <li
                 v-for="(item, index) in chapterList.chapters"
                 :key="index"
-                @click="click_chpater(item.link)"
+                @click="click_chpater(index)"
               >
                 <div class="title">{{item.title}}</div>
               </li>
             </ul>
           </div>
         </div>
-        <div class="tab-content" v-if="!isDir">书签</div>
+        <div class="tab-content" v-if="!isDir">
+          <div class="isNull">
+            <img src="@/assets/image/null.svg" alt>
+            <span>你还没有书签，请先在阅读页内添加</span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="footer">
@@ -52,17 +57,26 @@ export default {
     return {
       _id: null, // 书籍id
       chapterList: [], // 书籍章节
-      isDir: true // 当前是否选中得是目录选项
+      isDir: true, // 当前是否选中得是目录选项
+      isLoadings: true,
+      isOrder: true // 顺序  false 正序  true 倒序
     };
   },
-  methods: {
-    // 书籍章节倒叙
-    ReverseOrder() {
+  watch: {
+    isOrder(val, old) {
       this.chapterList.chapters.reverse();
     },
+    chapterList(val) {
+      this.isLoadings = false;
+    }
+  },
+  methods: {
     // 点击章节
-    click_chpater(link) {
-      console.log(link);
+    click_chpater(i) {
+      this.$router.push({
+        name: "BookContent",
+        params: { _id: this._id, index: i }
+      });
     },
     // 请求目录
     async getBookChapters() {
@@ -94,6 +108,10 @@ export default {
     flex-direction: column;
     .tab-content {
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       .module-header {
         padding: 0 20px 0 20px;
         width: calc(100% - 40px);
@@ -101,6 +119,20 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
+      }
+      .isNull {
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 500px;
+        span {
+          margin-top: 10px;
+          color: #aaa;
+          font-size: 14px;
+          text-align: center;
+        }
       }
       .chapter-list {
         width: 100%;

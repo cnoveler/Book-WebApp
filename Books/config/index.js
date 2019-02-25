@@ -23,6 +23,13 @@ module.exports = {
         pathRewrite: {
           "^/zhuishu": ""
         }
+      },
+      '/chapter': {
+        target: "http://chapterup.zhuishushenqi.com/",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/chapter": "/chapter"
+        }
       }
     },
 

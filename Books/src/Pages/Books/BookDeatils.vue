@@ -1,5 +1,5 @@
 <template>
-  <div class="bookdetails">
+  <div class="bookdetails" v-loading="isLoadings">
     <header>
       <Header>
         <span class="left-header-text" slot="left-text">{{bookInfo.title}}</span>
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="btn">
-        <el-button size="medium " class="btn-red">点击阅读</el-button>
+        <el-button size="medium " class="btn-red" @click="go_read">点击阅读</el-button>
         <el-button
           v-if="isBtnDisabled"
           ref="btn-add-book"
@@ -65,7 +65,7 @@
       <div class="books-intro">
         <el-card class="box-card" shadow="never">{{bookInfo.longIntro}}</el-card>
         <div class="book-directory">
-          <a href="javascript:;">
+          <a href="javascript:;" @click="Jump_directory">
             <p>目录</p>
             <div class="right-text">
               <span>{{bookupdated}} · {{bookInfo.isSerial==true?"连载":"完本"}}至{{bookInfo.lastChapter}}</span>
@@ -177,6 +177,7 @@ export default {
       reviewData: [], // 书籍短评
       reviewDataLen: null, // 书籍短评数量
       tagLen: [], // 书籍标签数量
+      isLoadings: true,
       isBtnDisabled: false
     };
   },
@@ -184,6 +185,11 @@ export default {
     Header,
     // Search,
     Footer
+  },
+  watch: {
+    bookInfo(val) {
+      this.isLoadings = false;
+    }
   },
   computed: {
     style() {
@@ -211,6 +217,20 @@ export default {
     this.isTheBookIn();
   },
   methods: {
+    // 点击阅读
+    go_read() {
+      this.$router.push({
+        name: "BookContent",
+        params: { _id: this._id }
+      });
+    },
+    // 跳转目录
+    Jump_directory() {
+      this.$router.push({
+        name: "BookChapter",
+        params: { _id: this._id }
+      });
+    },
     // 检测书架是否包含当前书籍
     isTheBookIn() {
       const obj = this.BookData.filter(item => {
