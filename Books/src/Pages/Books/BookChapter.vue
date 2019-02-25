@@ -14,23 +14,18 @@
         </div>
         <div class="tab-content" v-if="isDir">
           <div class="module-header">
-            <h4>共402章</h4>
-            <span>倒序</span>
+            <h4>共{{chapterList.chaptersCount1}}章</h4>
+            <span @click="ReverseOrder">倒序</span>
           </div>
           <div class="chapter-list">
             <ul>
-              <li class="chapter-bar">正文</li>
-              <li>
-                <div class="title">第1章 序章</div>
-              </li>
-              <li>
-                <div class="title">第2章 重生</div>
-              </li>
-              <li>
-                <div class="title">第3章 智脑</div>
-              </li>
-              <li>
-                <div class="title">第4章 红颜？祸水？</div>
+              <li class="chapter-bar">正文目录</li>
+              <li
+                v-for="(item, index) in chapterList.chapters"
+                :key="index"
+                @click="click_chpater(item.link)"
+              >
+                <div class="title">{{item.title}}</div>
               </li>
             </ul>
           </div>
@@ -47,6 +42,7 @@
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import request from "@/http_";
 export default {
   components: {
     Header,
@@ -54,10 +50,32 @@ export default {
   },
   data() {
     return {
+      _id: null, // 书籍id
+      chapterList: [], // 书籍章节
       isDir: true // 当前是否选中得是目录选项
     };
   },
-  methods: {}
+  methods: {
+    // 书籍章节倒叙
+    ReverseOrder() {
+      this.chapterList.chapters.reverse();
+    },
+    // 点击章节
+    click_chpater(link) {
+      console.log(link);
+    },
+    // 请求目录
+    async getBookChapters() {
+      this._id = this.$route.params.id;
+      const res = await request.get(
+        `${this.$config.BOOK_CHAPTERS_URL}${this._id}?view=chapters`
+      );
+      this.chapterList = res.data.mixToc;
+    }
+  },
+  created() {
+    this.getBookChapters();
+  }
 };
 </script>
 

@@ -13,7 +13,7 @@
         <div class="search-tags">
           <ul>
             <li @click="click_words(item)" v-for="(item ,index) in searchHotWords" :key="index">
-              <a href="javascript:;">{{item}}</a>
+              <a>{{item.word}}</a>
             </li>
           </ul>
         </div>
@@ -64,24 +64,12 @@ export default {
   },
   data() {
     return {
-      searchHotWords: [
-        "系统",
-        "重生",
-        "武动乾坤",
-        "圣墟",
-        "剑来",
-        "万界",
-        "元尊",
-        "末日",
-        "魔道祖师",
-        "重生之都市仙尊"
-      ],
+      searchHotWords: [],
       isSearched: this.isSearch,
       keywords: "", // 搜索字符串
       isDelShow: false,
       results: [], // 搜索返回列表
-      SearchHistory: [], // 搜索历史
-      r: Math.floor(Math.random() * 10 + 1) // 取得一个随机数 1 - 10
+      SearchHistory: [] // 搜索历史
     };
   },
   computed: {
@@ -98,28 +86,22 @@ export default {
       this.$emit("input", val);
     }
   },
-  beforeCreate() {
-    // 请求 最新热词
-    let arr = [];
-    request.get(this.$config.SEARCH_HOT_URL).then(res => {
-      const data = res.data.searchHotWords;
-      data.forEach((item, index) => {
-        arr.push(item);
-        if (index % 10 == 0) {
-          temp.push(arr);
-          arr = [];
-        }
-      });
-    });
-  },
   created() {
     // this.searchHotWords = temp;
     const data = localStorage.getItem("SEARCH_HISTORY");
     if (data != null) {
       this.SearchHistory = data.split(",");
     }
+    this.getSearchHotWords();
   },
   methods: {
+    // 请求搜索热词
+    async getSearchHotWords() {
+      // 请求 最新热词
+      let temp = Math.floor(Math.random() * 80 + 1);
+      const res = await request.get(this.$config.SEARCH_HOT_URL);
+      this.searchHotWords = res.data.searchHotWords.slice(temp, temp + 7);
+    },
     // 清空全部搜索历史
     click_clear() {
       localStorage.removeItem("SEARCH_HISTORY");

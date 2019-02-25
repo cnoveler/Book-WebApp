@@ -17,6 +17,13 @@ module.exports = {
           "^/api": ""
         }
       },
+      '/zhuishu': {
+        target: "http://api.zhuishushenqi.com/",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/zhuishu": ""
+        }
+      }
     },
 
     // Various Dev Server settings
