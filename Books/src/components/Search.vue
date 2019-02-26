@@ -12,7 +12,11 @@
         </div>
         <div class="search-tags">
           <ul>
-            <li @click="click_words(item)" v-for="(item ,index) in searchHotWords" :key="index">
+            <li
+              @click="click_words(item.word)"
+              v-for="(item ,index) in searchHotWords"
+              :key="index"
+            >
               <a>{{item.word}}</a>
             </li>
           </ul>
@@ -108,6 +112,7 @@ export default {
       this.SearchHistory = [];
     },
     click_words(word) {
+      console.log(word);
       this.keywords = word;
       localStorage.removeItem("SEARCH_HISTORY");
       this.SearchHistory = [

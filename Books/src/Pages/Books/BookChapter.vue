@@ -2,7 +2,7 @@
   <div v-loading="isLoadings">
     <div class="header">
       <Header>
-        <span class="left-header-text" slot="left-text">重生武神大主播</span>
+        <span class="left-header-text" slot="left-text">{{title}}</span>
         <p slot="header-content"></p>
       </Header>
     </div>
@@ -56,6 +56,7 @@ export default {
   data() {
     return {
       _id: null, // 书籍id
+      title: null, //书籍名称
       chapterList: [], // 书籍章节
       isDir: true, // 当前是否选中得是目录选项
       isLoadings: true,
@@ -88,6 +89,7 @@ export default {
     }
   },
   created() {
+    this.title = this.$route.params.title;
     this.getBookChapters();
   }
 };

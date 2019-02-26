@@ -228,7 +228,7 @@ export default {
     Jump_directory() {
       this.$router.push({
         name: "BookChapter",
-        params: { _id: this._id }
+        params: { _id: this._id, title: this.bookInfo.title }
       });
     },
     // 检测书架是否包含当前书籍

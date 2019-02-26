@@ -41,7 +41,7 @@
           <ul>
             <li
               class="book-li"
-              v-for="book in BookData"
+              v-for="(book,index) in BookData"
               :key="book.id"
               @click="selected_book(book._id)"
             >
@@ -58,7 +58,7 @@
                   <div class="book-header">
                     <div class="book-title">{{book.title}}</div>
                     <div class="book-title-r">
-                      <span>立即阅读</span>
+                      <span>{{isReadName=='尚未阅读'? '立即阅读':'继续阅读'}}</span>
                       <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-right"></use>
                       </svg>
@@ -68,7 +68,7 @@
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-user"></use>
                     </svg>
-                    {{book.author}} | {{isReadName}}
+                    {{book.author}} | {{isReadName[index].RName}}
                   </div>
                   <div class="book-to-new">
                     <div class="left-text">
@@ -135,17 +135,7 @@ export default {
   computed: {
     // 检测是否有阅读历史
     isReadName() {
-      const data = JSON.parse(localStorage.getItem("book-data"));
-      if (data.length > 0) {
-        const temp = data.filter((item, index) => {
-          return item.RName;
-        });
-        if (temp.length > 0) {
-          return temp[0].RName;
-        } else {
-          return "尚未阅读";
-        }
-      }
+      return this.isReadNams();
     },
     bookupdated() {
       // 书籍更新时间
@@ -162,6 +152,19 @@ export default {
     }
   },
   methods: {
+    isReadNams() {
+      const data = JSON.parse(localStorage.getItem("book-data"));
+      if (data.length > 0) {
+        const temp = data.filter((item, index) => {
+          return item.RName;
+        });
+        if (temp.length > 0) {
+          return temp;
+        } else {
+          return "尚未阅读";
+        }
+      }
+    },
     // 时间格式话
     formatDate(t) {
       const [T, Z] = t
@@ -196,6 +199,9 @@ export default {
             return (item.isSelected = !item.isSelected);
           }
         });
+      }
+      if (this.isReadNams() !== "尚未阅读") {
+        this.$router.push(`/book/${_id}/read`);
       } else {
         this.$router.push(`/book/${_id}`);
       }
