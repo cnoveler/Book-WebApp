@@ -158,7 +158,7 @@ export default {
         setTimeout(() => {
           // 延迟加载
           this.chapterCount = val;
-        }, 400);
+        }, 1000);
       });
     }
   },
@@ -228,7 +228,7 @@ export default {
           }
           this.getBookContent();
           this.setBookReadName();
-        }, 600);
+        }, 1000);
       });
     },
     // 请求书籍信息数据

@@ -115,10 +115,13 @@ header {
   width: 100%;
   height: 50px;
   z-index: 99;
+  background: #f4f5f6;
   border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: center;
   // background: #fff;
   .header {
-    width: 100%;
+    width: calc(100% - 20px);
     height: 50px;
     display: flex;
     // border-bottom: 1px solid #ccc;
@@ -133,14 +136,15 @@ header {
     user-select: none; /* CSS3属性 */
     .left-icon {
       cursor: pointer;
-      margin-left: 10px;
+      // margin-left: 10px;
       font-size: 24px;
     }
     .content {
-      width: 200px;
       display: flex;
       font-size: 14px;
-      font-weight: 500;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
       .my-history.active {
         background-color: #ed424b;
         a {
@@ -154,43 +158,37 @@ header {
         }
       }
       .my-bookshelf {
-        cursor: pointer;
-        width: 100px;
-        height: 38px;
-        display: flex;
-        align-items: center;
+        height: 30px;
         background-color: #fff;
         border-radius: 4px 0 0 4px;
         border: 1px solid #ed424b;
         justify-content: center;
+        line-height: 30px;
         a {
-          letter-spacing: 3px;
-          font-size: 16px;
+          padding: 5px;
           color: #ed424b;
           text-decoration: none;
         }
       }
       .my-history {
-        cursor: pointer;
-        width: 100px;
-        height: 38px;
-        display: flex;
-        align-items: center;
+        height: 30px;
         background-color: #fff;
         border: 1px solid #ed424b;
         border-left: none;
         border-radius: 0 4px 4px 0;
+        line-height: 30px;
         justify-content: center;
         a {
+          padding: 5px;
           text-decoration: none;
-          letter-spacing: 3px;
-          font-size: 16px;
           color: #ed424b;
         }
       }
     }
     .right-option {
+      width: 50px;
       display: flex;
+      justify-content: space-between;
       .search {
         cursor: pointer;
         font-size: 22px;
@@ -198,8 +196,6 @@ header {
       .more {
         cursor: pointer;
         font-size: 22px;
-        margin-left: 15px;
-        margin-right: 10px;
       }
     }
   }

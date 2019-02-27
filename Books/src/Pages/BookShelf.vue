@@ -45,12 +45,12 @@
               :key="book.id"
               @click="selected_book(book._id)"
             >
-              <i :class="['radio',{active: book.isSelected}] " v-show="isEdit">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-check"></use>
-                </svg>
-              </i>
               <div class="book-layout">
+                <i :class="['radio',{active: book.isSelected}] " v-show="isEdit">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-check"></use>
+                  </svg>
+                </i>
                 <a href="javascript:;">
                   <img :src="decodeURIComponent((book.cover).replace('/agent/',''))">
                 </a>
@@ -68,12 +68,12 @@
                     <svg class="icon" aria-hidden="true">
                       <use xlink:href="#icon-user"></use>
                     </svg>
-                    {{book.author}} | {{isReadName[index].RName}}
+                    {{book.author}} | {{isReadName=='尚未阅读'?'尚未阅读':isReadName[index].RName}}
                   </div>
                   <div class="book-to-new">
                     <div class="left-text">
                       <span class="dot-red"></span>
-                      <a href="javascript:;">更新至 {{book.lastChapter}}</a>
+                      <span>更新至 {{book.lastChapter}}</span>
                     </div>
                     <span class="updatedtime" v-if="!isEdit">{{formatDate(book.updated)}}</span>
                   </div>
@@ -115,7 +115,7 @@ export default {
     isEdit(val, old) {
       if (this.BookData.length <= 0) return;
       if (val) {
-        this.$refs["content"].style.marginTop = 0;
+        this.$refs["content"].style.marginTop = "0px";
         this.$refs["book-list"].style.marginTop = "50px";
       } else {
         this.$refs["book-list"].style.marginTop = "0px";
@@ -124,7 +124,7 @@ export default {
       this.BookData.map(item => (item.isSelected = false));
     },
     BookData(val, old) {
-      if (this.BookData.length <= 5) {
+      if (this.BookData.length <= 4) {
         this.$refs["footer"].style.position = "fixed";
         this.$refs["footer"].style.bottom = "0px";
       } else {
@@ -156,7 +156,7 @@ export default {
       const data = JSON.parse(localStorage.getItem("book-data"));
       if (data.length > 0) {
         const temp = data.filter((item, index) => {
-          return item.RName;
+          return item.RName != "undefined";
         });
         if (temp.length > 0) {
           return temp;
@@ -199,11 +199,12 @@ export default {
             return (item.isSelected = !item.isSelected);
           }
         });
-      }
-      if (this.isReadNams() !== "尚未阅读") {
-        this.$router.push(`/book/${_id}/read`);
       } else {
-        this.$router.push(`/book/${_id}`);
+        if (this.isReadNams() !== "尚未阅读") {
+          this.$router.push(`/book/${_id}/read`);
+        } else {
+          this.$router.push(`/book/${_id}`);
+        }
       }
     },
     checkall() {
@@ -227,9 +228,11 @@ export default {
   flex-direction: column;
   width: 100%;
   margin-top: 50px;
+  align-items: center;
   .my-default-header {
+    width: calc(100% - 20px);
+    margin-top: 10px;
     display: flex;
-    margin: 10px;
     justify-content: space-between;
     .title {
       font-weight: 600;
@@ -293,10 +296,9 @@ export default {
   background: rgba(0, 0, 0, 0.4);
 }
 .book-list {
-  width: calc(100% - 50px);
+  width: calc(100% - 20px);
   display: flex;
   flex-direction: column;
-  margin-left: 30px;
   ul,
   li {
     list-style: none;
@@ -328,7 +330,9 @@ export default {
       width: 100%;
       display: flex;
       flex-direction: row;
+      align-items: center;
       img {
+        margin-right: 10px;
         width: 60px;
         height: 80px;
       }
@@ -340,8 +344,10 @@ export default {
         display: flex;
         width: 100%;
         flex-direction: column;
-        margin-left: 15px;
+        // margin-left: 15px;
         overflow: hidden;
+        left: 10px;
+        align-content: center;
         font-size: 14px;
         .book-header {
           width: 100%;
@@ -352,11 +358,14 @@ export default {
           margin-bottom: 10px;
           font-weight: 200;
           .book-title {
+            width: 40%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             font-weight: 600;
             letter-spacing: 0.5px;
           }
           .book-title-r {
-            width: 100px;
             font-size: 14px;
             color: #bbb;
             svg {
@@ -365,6 +374,7 @@ export default {
           }
         }
         .book-meta {
+          width: 100%;
           color: #bbb;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -378,7 +388,7 @@ export default {
           justify-content: space-between;
           .left-text {
             position: relative;
-            width: 70%;
+            width: calc(100% - 20px);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -393,7 +403,7 @@ export default {
               background: red;
               margin: 0 2px 0 2px;
             }
-            a {
+            span {
               color: #bbb;
             }
           }
@@ -415,6 +425,8 @@ export default {
   justify-content: space-between;
   border-bottom: 1px solid #ccc;
   background: #fff;
+  position: fixed;
+  top: 0;
   div {
     margin: 0 20px 0 20px;
   }
