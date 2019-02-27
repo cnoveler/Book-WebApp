@@ -25,16 +25,25 @@
           <button @click="clicked_del">删除</button>
         </div>
       </transition>
-      <Header v-show="!isEdit" v-model="isSearch" isHis="bookshelf"/>
+      <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+        <Header
+          v-if="!isEdit"
+          v-show="isShow"
+          v-model="isSearch"
+          isHis="bookshelf"
+          :open.sync="open"
+        />
+      </transition>
+
       <div class="content" ref="content">
-        <div class="my-default-header" v-show="!isEdit">
-          <div class="default-selected" @click="isDefaultshelf=!isDefaultshelf">
-            <span class="title">默认书架({{BookData.length}})</span>
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-caret-down"></use>
-            </svg>
+        <div class="my-default-header" ref="myDefaultHeader" v-show="!isEdit">
+          <div class="default-header">
+            <div class="default-selected" @click="isDefaultshelf=!isDefaultshelf">
+              <span class="title">默认书架({{BookData.length}})</span>
+              <i class="el-icon-caret-bottom"></i>
+            </div>
+            <div class="edit" @click="isEdit=!isEdit">编辑</div>
           </div>
-          <div class="edit" @click="isEdit=!isEdit">编辑</div>
         </div>
         <div class="null" v-if="BookData.length <= 0">默认书架是空的</div>
         <div class="book-list" ref="book-list" v-if="BookData.length > 0">
@@ -103,6 +112,9 @@ export default {
       isDefaultshelf: false, // 选中默认书架
       isEdit: false, // 是否编辑书架
       isSearch: false, //是否搜索
+      isShow: true,
+      open: false,
+      scrollTops: 0,
       updatedt: []
     };
   },
@@ -112,7 +124,19 @@ export default {
     Search
   },
   watch: {
+    scrollTops(val) {
+      if (val >= 50) {
+        this.$refs["myDefaultHeader"].style.position = "fixed";
+        this.$refs["myDefaultHeader"].style.top = 0;
+        this.$refs["myDefaultHeader"].style.Zindex = 99;
+        this.isShow = false;
+      } else {
+        this.$refs["myDefaultHeader"].style.position = "";
+        this.isShow = true;
+      }
+    },
     isEdit(val, old) {
+      this.isShow = true;
       if (this.BookData.length <= 0) return;
       if (val) {
         this.$refs["content"].style.marginTop = "0px";
@@ -131,6 +155,15 @@ export default {
         this.$refs["footer"].style.position = "relative";
       }
     }
+  },
+  mounted() {
+    window.addEventListener("scroll", e => {
+      if (!this.open) {
+        const scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop;
+        this.scrollTops = scrollTop;
+      }
+    });
   },
   computed: {
     // 检测是否有阅读历史
@@ -230,15 +263,26 @@ export default {
   margin-top: 50px;
   align-items: center;
   .my-default-header {
-    width: calc(100% - 20px);
-    margin-top: 10px;
+    z-index: 1;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    height: 50px;
+    align-items: center;
+    background: #fff;
+    justify-content: center;
+    border-bottom: 1px solid #eee;
+    .default-header {
+      width: calc(100% - 20px);
+      display: flex;
+      justify-content: space-between;
+    }
     .title {
       font-weight: 600;
+      font-size: 0.89rem;
     }
     .edit {
       cursor: pointer;
+      font-size: 0.89rem;
     }
   }
   .null {
@@ -420,6 +464,7 @@ export default {
   display: flex;
   height: 50px;
   width: 100%;
+  z-index: 99;
   position: fixed;
   align-items: center;
   justify-content: space-between;

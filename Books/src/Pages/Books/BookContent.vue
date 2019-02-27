@@ -402,6 +402,18 @@ export default {
     align-items: center;
     justify-content: space-between;
     color: rgba(0, 0, 0, 0.4);
+    .chapter-title {
+      width: 50%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .title {
+      width: 50%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
   .read-content {
     width: inherit;

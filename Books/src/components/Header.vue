@@ -5,9 +5,7 @@
       <div class="header">
         <slot name="left-icon">
           <div class="left-icon" onclick="history.back(-1)">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-left"></use>
-            </svg>
+            <i class="el-icon-arrow-left"></i>
             <slot name="left-text"></slot>
           </div>
         </slot>
@@ -31,13 +29,14 @@
         <div class="right-option">
           <div class="search" @click="click_search">
             <slot name="search-user">
-              <svg class="icon" aria-hidden="true">
+              <!-- <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-search"></use>
-              </svg>
+              </svg>-->
+              <i class="el-icon-search"></i>
             </slot>
           </div>
           <slot name="right-more">
-            <div class="more" @click="openmenu">
+            <div class="more" @click="open = !open">
               <svg class="icon" aria-hidden="true">
                 <use v-if="!open" xlink:href="#icon-menu"></use>
                 <use v-else xlink:href="#icon-close"></use>
@@ -84,17 +83,14 @@
 <script>
 import "@/assets/styles/animate.css";
 export default {
-  props: ["isHis", "isSearch"],
+  props: ["isHis", "isSearch", "isopen"],
   data() {
     return {
-      open: false,
+      open: this.isopen,
       isSearched: this.isSearch
     };
   },
   methods: {
-    openmenu() {
-      this.open = !this.open;
-    },
     click_search() {
       this.isSearched = true;
       return this.$emit("input", this.isSearched);
@@ -103,6 +99,12 @@ export default {
   watch: {
     isSearch(val, old) {
       this.isSearched = val;
+    },
+    isopen(val) {
+      this.open = val;
+    },
+    open(val) {
+      this.$emit("update:open", val);
     }
   }
 };
@@ -137,14 +139,14 @@ header {
     .left-icon {
       cursor: pointer;
       // margin-left: 10px;
-      font-size: 24px;
+      font-size: 18px;
     }
     .content {
+      margin-left: 30px;
       display: flex;
-      font-size: 14px;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: 0.8125rem;
       .my-history.active {
         background-color: #ed424b;
         a {
@@ -158,28 +160,26 @@ header {
         }
       }
       .my-bookshelf {
-        height: 30px;
         background-color: #fff;
         border-radius: 4px 0 0 4px;
         border: 1px solid #ed424b;
         justify-content: center;
-        line-height: 30px;
+        line-height: 1.5rem;
+        padding: 0 0.75rem;
         a {
-          padding: 5px;
           color: #ed424b;
           text-decoration: none;
         }
       }
       .my-history {
-        height: 30px;
         background-color: #fff;
         border: 1px solid #ed424b;
         border-left: none;
         border-radius: 0 4px 4px 0;
-        line-height: 30px;
         justify-content: center;
+        line-height: 1.5rem;
+        padding: 0 0.75rem;
         a {
-          padding: 5px;
           text-decoration: none;
           color: #ed424b;
         }
@@ -188,50 +188,52 @@ header {
     .right-option {
       width: 50px;
       display: flex;
+      cursor: pointer;
+
       justify-content: space-between;
       .search {
-        cursor: pointer;
-        font-size: 22px;
+        font-size: 18px;
       }
       .more {
-        cursor: pointer;
-        font-size: 22px;
+        font-size: 18px;
       }
     }
   }
   .mask {
     position: fixed;
     width: 100%;
-    z-index: 1;
-    height: 100%;
+    height: calc(100% - 50px);
+    top: 50px;
     background: rgba(0, 0, 0, 0.3);
   }
   .header-content {
-    z-index: 99;
+    top: 50px;
     width: 100%;
+    z-index: 99;
     position: absolute;
-    background: #fff;
+    background: #e5e8eb;
     ul,
     li {
       list-style: none;
     }
     .nav-list {
-      font-size: 18px;
+      font-size: 14px;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
       li {
-        width: 130px;
-        height: 130px;
+        width: 120px;
+        height: 80px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         .title {
-          font-weight: bold;
+          font-weight: 500;
         }
       }
       .icon {
-        margin: 20px;
+        margin: 5px;
         background-image: url(../assets/image/sprite.png);
         background-size: 87px 87px;
       }

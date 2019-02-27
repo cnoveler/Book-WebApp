@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="isLoadings">
     <div class="search-header">
       <SearchHeader v-model="keywords" :results.sync="results"/>
     </div>
@@ -68,8 +68,8 @@ export default {
     return {
       query: "", //  搜索关键字
       result: [], // 搜索结果数据
-      keywords: "",
-      results: []
+      isLoadings: true,
+      keywords: ""
     };
   },
   computed: {
@@ -79,6 +79,11 @@ export default {
     },
     wordCount() {
       console.log(val);
+    }
+  },
+  watch: {
+    result(val) {
+      this.isLoadings = false;
     }
   },
   created() {
