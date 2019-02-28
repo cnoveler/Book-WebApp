@@ -68,6 +68,7 @@ export default {
     return {
       query: "", //  搜索关键字
       result: [], // 搜索结果数据
+      results: "",
       isLoadings: true,
       keywords: ""
     };

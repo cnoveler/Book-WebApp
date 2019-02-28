@@ -1,3 +1,9 @@
+/*
+ * @Author: Init 
+ * @Date: 2019-02-28 14:32:10 
+ * @Last Modified by: Init
+ * @Last Modified time: 2019-02-28 14:44:42
+ */
 // 头部 
 <template>
   <div>
@@ -74,6 +80,9 @@
               <div class="title">账户</div>
             </li>
           </ul>
+          <div class="my-book">
+            <button @click="$router.push({name:'BookShelf'})">我的书架</button>
+          </div>
         </div>
       </transition>
     </header>
@@ -189,7 +198,6 @@ header {
       width: 50px;
       display: flex;
       cursor: pointer;
-
       justify-content: space-between;
       .search {
         font-size: 18px;
@@ -212,6 +220,25 @@ header {
     z-index: 99;
     position: absolute;
     background: #e5e8eb;
+    .my-book {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      button {
+        width: 80%;
+        outline: none;
+        max-width: 500px;
+        margin: 10px 0;
+        border-radius: 40px;
+        height: 2.25rem;
+        background: #ed424b;
+        color: #fff;
+        font-size: 0.875rem;
+        line-height: 2.25rem;
+        letter-spacing: 2px;
+        border: none;
+      }
+    }
     ul,
     li {
       list-style: none;

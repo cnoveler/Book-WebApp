@@ -26,16 +26,18 @@
       </div>
     </transition>
 
-    <div class="content" v-show="content.length>0">
+    <div class="content" v-show="content.length>0" ref="content">
       <div :class="['book-title-top',isFuColor]">
-        <div class="chapter-title">{{title}}</div>
-        <div class="title">《{{bookInfo.title}}》</div>
+        <div class="title-top">
+          <div class="chapter-title">{{title}}</div>
+          <!-- <div class="title">《{{bookInfo.title}}》</div> -->
+        </div>
       </div>
-      <div class="read-content" :style="{fontSize:fontSize + 'px'}">
+      <div :class="['read-content',isFuColor]" :style="{fontSize:fontSize + 'px'}">
         <article class="read-article" @click="isOptionOpen = !isOptionOpen">
           <section class="read-section">
             <div v-for="(items,index) in content" :key="index">
-              <p class="chapter-t">{{title}}</p>
+              <h4 class="chapter-t">{{title}}</h4>
               <p v-for="(item,index) in items" :key="index">{{item}}</p>
             </div>
           </section>
@@ -54,7 +56,7 @@
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-menu"></use>
             </svg>
-            <span>目录</span>
+            <span @click="isOpenChapter=true">目录</span>
           </li>
           <li class="list-menu">
             <svg class="icon" aria-hidden="true">
@@ -116,8 +118,58 @@
         </div>
       </div>
     </transition>
-
-    <!-- 右侧目录展示 -->
+    <div class="mask" v-show="isOpenChapter" @click="isOpenChapter=!isOpenChapter"></div>
+    <transition
+      enter-active-class="animated slideInRight"
+      leave-active-class="animated slideOutRight"
+    >
+      <!-- 右侧目录展示 -->
+      <div
+        class="chapter-right-x"
+        v-show="isOpenChapter"
+        ref="chapter-right-x"
+        style="animation-duration: 500ms"
+      >
+        <div class="module-x">
+          <div class="module-header">
+            <div class="header-tab">
+              <div :class="['module-tab',{active:isChapterOrTag}]" @click="isChapterOrTag = true">目录</div>
+              <div
+                :class="['module-tab',{active:!isChapterOrTag}]"
+                @click="isChapterOrTag = false"
+              >书签</div>
+            </div>
+          </div>
+          <div class="module-content">
+            <div class="module-chapter-x" v-show="isChapterOrTag">
+              <div class="module-conut">
+                <div class="conut">
+                  <h4>共{{chapterList.chaptersCount1}}章</h4>
+                  <span @click="isOrder=!isOrder">{{isOrder? '倒序':'正序'}}</span>
+                </div>
+              </div>
+              <div class="text-x">正文卷</div>
+              <ul>
+                <li
+                  class="title"
+                  v-for="(item,index) in chapterList.chapters"
+                  :key="index"
+                  @click="click_chapter_title(index)"
+                >{{item.title}}</li>
+              </ul>
+            </div>
+            <div class="module-tag-x" v-show="!isChapterOrTag">
+              <div class="null">
+                <div class="isnull">
+                  <img src="@/assets/image/null.svg" alt>
+                  <span>你还没有书签，请先在阅读页内添加</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -137,10 +189,21 @@ export default {
       fontSize: 16, // 章节文字大小
       isMore: false, // 设置 的more 是否打开
       isSeting: false, // 菜单字体肤色设置
-      isFuColor: "skinGreen" // 肤色当前颜色
+      isFuColor: "skinGreen", // 肤色当前颜色
+      isOpenChapter: false, // 是否打开目录
+      isChapterOrTag: true, // true chapter false tag
+      isOrder: true // 顺序  false 正序  true 倒序
     };
   },
   watch: {
+    isOpenChapter(val) {
+      if (val) {
+        document.documentElement.style.overflowY = "hidden";
+        this.$refs["chapter-right-x"].style.overflowY = "scroll";
+      } else {
+        document.documentElement.style.overflowY = "scroll";
+      }
+    },
     isOptionOpen(val) {
       this.isSeting = false;
     },
@@ -148,6 +211,11 @@ export default {
       this.isLoadings = false;
     },
     chapterCount(val, old) {
+      if (this.isOpenChapter) {
+        this.content = [];
+        this.getBookContent();
+        this.isOpenChapter = false;
+      }
       if (val - old == 1) {
         this.getBookContent();
       }
@@ -170,8 +238,9 @@ export default {
     }
   },
   methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+    // 点击目录章节
+    click_chapter_title(i) {
+      this.chapterCount = i;
     },
     // 检测是否有阅读历史
     isReadName() {
@@ -390,37 +459,48 @@ export default {
   border-top: 1px solid rgba(255, 255, 255, 0.16);
 }
 .content {
+  position: relative;
   width: 100%;
   .book-title-top {
     position: fixed;
-    // background: #c8e8c8;
+    top: 0;
+    z-index: 1;
     height: 50px;
-    margin: 0px 20px 0px 20px;
-    width: calc(100% - 40px);
+    width: 100%;
     display: flex;
-    font-size: 14px;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     color: rgba(0, 0, 0, 0.4);
-    .chapter-title {
-      width: 50%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .title {
-      width: 50%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    .title-top {
+      width: calc(100% - 40px);
+      height: 50px;
+      display: flex;
+      font-size: 14px;
+      align-items: center;
+      justify-content: space-between;
+      .chapter-title {
+        width: 50%;
+        overflow: hidden;
+        display: flex;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .title {
+        display: flex;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
   .read-content {
     width: inherit;
     display: flex;
+    position: absolute;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    letter-spacing: 2px;
+    top: 50px;
     .read-article {
       width: calc(100% - 40px);
       .read-section {
@@ -428,10 +508,11 @@ export default {
         margin: 0.2em 0;
         .chapter-t {
           text-indent: 0px;
-          font-weight: 800;
+          font-weight: 500;
         }
         p {
           text-indent: 25px;
+          font-weight: 300;
           margin: 10px 0px 10px 0px;
         }
       }
@@ -455,4 +536,130 @@ export default {
     }
   }
 }
+.mask {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: absolute;
+  background: rgba($color: #000000, $alpha: 0.3);
+}
+.chapter-right-x {
+  width: 80%;
+  position: fixed;
+  left: 20%;
+  height: 100%;
+  z-index: 99;
+  background: #fff;
+  .module-x {
+    display: flex;
+    width: 100%;
+    z-index: 999;
+    position: absolute;
+    background: #fff;
+    flex-direction: column;
+    .module-header {
+      width: 100%;
+      height: 50px;
+      z-index: 99;
+      background: #fff;
+      .header-tab {
+        width: 100%;
+        display: flex;
+        height: 50px;
+        justify-content: space-between;
+      }
+      .module-tab {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #bbb;
+        border-bottom: 1px solid #eee;
+      }
+      .active {
+        border-bottom: 1.5px solid #ed424b;
+        color: #ed424b;
+      }
+    }
+    .module-chapter-x {
+      width: 100%;
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      .module-conut {
+        display: flex;
+        justify-content: center;
+        .conut {
+          width: calc(100% - 20px);
+          display: flex;
+          height: 50px;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+      .text-x {
+        height: 50px;
+        background: #eee;
+        color: #aaa;
+        font-size: 0.8933rem;
+        padding-left: 10px;
+        display: flex;
+        align-items: center;
+      }
+      ul,
+      li {
+        list-style: none;
+      }
+      ul {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .title {
+        height: 50px;
+        width: calc(100% - 10px);
+        display: flex;
+        align-items: center;
+        font-weight: 200;
+        border-bottom: 1px solid #eee;
+      }
+    }
+    .module-tag-x {
+      width: 100%;
+      display: flex;
+      .null {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        background: #fff;
+        .isnull {
+          width: 251px;
+          display: flex;
+          justify-content: center;
+          height: 251px;
+          align-items: center;
+          flex-direction: column;
+          span {
+            width: 70%;
+            color: #aaa;
+            font-size: 14px;
+            position: relative;
+            top: 10px;
+            text-align: center;
+            letter-spacing: 2px;
+          }
+        }
+      }
+    }
+  }
+}
+// .chapter-right-x::before {
+//   content: "";
+//   width: 100%;
+//   height: 100%;
+//   position: fixed;
+//   z-index: 1;
+//   background: rgba($color: #000000, $alpha: 0.3);
+// }
 </style>
