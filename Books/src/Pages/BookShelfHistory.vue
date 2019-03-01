@@ -1,7 +1,10 @@
 <template>
   <div>
     <div v-show="!isSearch">
-      <Header isHis="history" v-model="isSearch"/>
+      <Header isHis="history" v-model="isSearch">
+        <div slot="tit1" @click="$router.push({name:'BookShelf'})">我的书架</div>
+        <div slot="tit2" @click="$router.push({name:'BookShelfHistory'})">最近阅读</div>
+      </Header>
       <div class="content">
         <div class="null" v-if="BookHistory.length <= 0">还没有阅读历史哟</div>
         <div class="book-list" ref="book-list" v-if="BookHistory.length > 0">

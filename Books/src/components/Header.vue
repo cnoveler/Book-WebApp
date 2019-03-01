@@ -2,7 +2,7 @@
  * @Author: Init 
  * @Date: 2019-02-28 14:32:10 
  * @Last Modified by: Init
- * @Last Modified time: 2019-02-28 14:44:42
+ * @Last Modified time: 2019-02-28 16:56:42
  */
 // 头部 
 <template>
@@ -17,15 +17,18 @@
         </slot>
         <slot name="header-content">
           <div class="content">
-            <div :class="['my-bookshelf',{active: isHis == 'bookshelf'}]">
+            <div :class="['my-bookshelf',{active: isHis == 'bookshelf'|| isHis == 'male'}]">
               <span>
-                <router-link to="/bookshelf/my">我的书架</router-link>
-                <!-- <a href="/bookshelf/my">我的书架</a> -->
+                <a>
+                  <slot name="tit1">我的书架</slot>
+                </a>
               </span>
             </div>
-            <div :class="['my-history',{active: isHis == 'history'}]">
+            <div :class="['my-history',{active: isHis == 'history'|| isHis == 'female'}]">
               <span>
-                <router-link to="/bookshelf/my-history">最近阅读</router-link>
+                <a>
+                  <slot name="tit2">最近阅读</slot>
+                </a>
                 <!-- <a href="/bookshelf/my-history">最近阅读</a> -->
               </span>
             </div>
@@ -33,12 +36,12 @@
         </slot>
 
         <div class="right-option">
-          <div class="search" @click="click_search">
+          <div class="search">
             <slot name="search-user">
               <!-- <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-search"></use>
               </svg>-->
-              <i class="el-icon-search"></i>
+              <i class="el-icon-search" @click="click_search"></i>
             </slot>
           </div>
           <slot name="right-more">
@@ -55,7 +58,7 @@
       <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
         <div class="header-content" v-show="open" style="animation-duration: 600ms">
           <ul class="nav-list">
-            <li>
+            <li @click="$router.push({name:'Home'})">
               <div class="icon icon-home"></div>
               <div class="title">首页</div>
             </li>
@@ -151,7 +154,6 @@ header {
       font-size: 18px;
     }
     .content {
-      margin-left: 30px;
       display: flex;
       align-items: center;
       justify-content: center;

@@ -32,7 +32,10 @@
           v-model="isSearch"
           isHis="bookshelf"
           :open.sync="open"
-        />
+        >
+          <div slot="tit1" @click="$router.push({name:'BookShelf'})">我的书架</div>
+          <div slot="tit2" @click="$router.push({name:'BookShelfHistory'})">最近阅读</div>
+        </Header>
       </transition>
 
       <div class="content" ref="content">

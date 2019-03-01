@@ -13,10 +13,7 @@
             <use xlink:href="#icon-close-circle-fill"></use>
           </svg>
         </i>
-        <div class="colse" @click="click_close">
-          <!-- <router-link to="/bookshelf/my">取消</router-link> -->
-          取消
-        </div>
+        <div class="colse" @click="click_close">取消</div>
       </div>
     </header>
   </div>
@@ -65,11 +62,13 @@ export default {
       this.$refs["search-input"].focus();
     },
     click_close() {
-      // console.log(this.$route);
       if (this.$route.fullPath == "/bookshelf/my") {
         return this.$emit("update:isSearched", false);
       }
-      this.$router.push("/bookshelf/my");
+      if (this.$route.fullPath == "/") {
+        return this.$emit("update:isSearched", false);
+      }
+      this.$router.push({ name: "Home" });
     }
   }
 };

@@ -217,12 +217,37 @@ export default {
     this.isTheBookIn();
   },
   methods: {
+    open2() {
+      this.$confirm("此操作需要将书籍加入书架, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+        center: true
+      })
+        .then(() => {
+          this.add_bookdata(this.bookInfo);
+          this.$message({
+            type: "success",
+            message: "加入成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消操作"
+          });
+        });
+    },
     // 点击阅读
     go_read() {
-      this.$router.push({
-        name: "BookContent",
-        params: { _id: this._id }
-      });
+      if (this.isBtnDisabled) {
+        this.$router.push({
+          name: "BookContent",
+          params: { _id: this._id }
+        });
+      } else {
+        this.open2();
+      }
     },
     // 跳转目录
     Jump_directory() {
