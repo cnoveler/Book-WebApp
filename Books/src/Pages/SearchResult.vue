@@ -25,6 +25,7 @@
         <a href="javascript:;">收藏</a>
         <a href="javascript:;">推荐</a>
       </div>
+      <!-- 搜索结果显示 -->
       <div class="book-list">
         <ul>
           <li class="book-li" v-for="item in result" :key="item._id">

@@ -2,7 +2,7 @@
  * @Author: Init 
  * @Date: 2019-02-28 14:32:10 
  * @Last Modified by: Init
- * @Last Modified time: 2019-02-28 16:56:42
+ * @Last Modified time: 2019-03-01 14:58:09
  */
 // 头部 
 <template>
@@ -124,10 +124,10 @@ export default {
 
 <style lang="scss" scoped >
 header {
-  position: fixed;
+  position: absolute;
   top: 0;
   width: 100%;
-  height: 50px;
+  height: 3.5655rem;
   z-index: 99;
   background: #f4f5f6;
   border-bottom: 1px solid #eee;
@@ -136,7 +136,7 @@ header {
   // background: #fff;
   .header {
     width: calc(100% - 20px);
-    height: 50px;
+    height: 3.5655rem;
     display: flex;
     // border-bottom: 1px solid #ccc;
     background: #f4f5f6;
@@ -157,7 +157,7 @@ header {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.8125rem;
+      font-size: 1rem;
       .my-history.active {
         background-color: #ed424b;
         a {
@@ -175,8 +175,8 @@ header {
         border-radius: 4px 0 0 4px;
         border: 1px solid #ed424b;
         justify-content: center;
-        line-height: 1.5rem;
-        padding: 0 0.75rem;
+        line-height: 0 0.95rem;
+        padding: 0 1.2rem;
         a {
           color: #ed424b;
           text-decoration: none;
@@ -188,8 +188,8 @@ header {
         border-left: none;
         border-radius: 0 4px 4px 0;
         justify-content: center;
-        line-height: 1.5rem;
-        padding: 0 0.75rem;
+        line-height: 0 0.95rem;
+        padding: 0 1.2rem;
         a {
           text-decoration: none;
           color: #ed424b;

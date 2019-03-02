@@ -14,10 +14,20 @@ Vue.prototype.$config = config
 // 引入element-ui
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+
+// require styles
+import 'swiper/dist/css/swiper.css'
+Vue.use(VueAwesomeSwiper, /* { default global options } */ )
+
+
 Vue.config.productionTip = false
 Vue.mixin(mixins)
 // 注册 element-ui
 Vue.use(ElementUI)
+
+
 
 
 /* eslint-disable no-new */

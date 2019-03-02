@@ -1,0 +1,67 @@
+/*
+ * @Author: Init 
+ * @Date: 2019-03-01 16:09:28 
+ * @Last Modified by: Init
+ * @Last Modified time: 2019-03-01 16:17:34
+ */
+<template>
+  <div>
+    <div class="module">
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span class="title">
+            <slot name="title">
+              <h3>热门小说</h3>
+            </slot>
+            <slot name="title-desc"></slot>
+          </span>
+          <slot name="more">
+            <span class="more">
+              更多
+              <i class="el-icon-arrow-right"></i>
+            </span>
+          </slot>
+        </div>
+        <slot name="content"></slot>
+      </el-card>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {};
+</script>
+
+<style scoped lang="scss">
+.module {
+  width: 100%;
+  .box-card {
+    .clearfix {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .more {
+        color: #969ba3;
+        cursor: pointer;
+      }
+      .title {
+        display: flex;
+        align-items: center;
+        h3 {
+          margin-right: 5px;
+        }
+      }
+      .title::before {
+        display: inline-block;
+        box-sizing: border-box;
+        position: relative;
+        width: 0.625rem;
+        height: 1.25em;
+        content: "";
+        color: transparent;
+        border-left: 3px solid #ed424b;
+      }
+    }
+  }
+}
+</style>

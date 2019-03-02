@@ -8,7 +8,7 @@
         <li>帮助</li>
         <li>反馈</li>
       </ul>
-      <div class="footer-copy">Copyright © 2002-2019 m.init.com</div>
+      <div class="footer-copy">Copyright © 2002-2019 m.qidian.com</div>
     </footer>
   </div>
 </template>
