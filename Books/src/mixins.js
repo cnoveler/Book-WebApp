@@ -1,5 +1,4 @@
 const mixins = {
-
   data() {
     return {
       BookData: [], // 全局混入 书架数据

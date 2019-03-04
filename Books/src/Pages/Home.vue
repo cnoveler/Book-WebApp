@@ -1,12 +1,6 @@
-/*
- * @Author: Init 
- * @Date: 2019-02-28 14:53:43 
- * @Last Modified by: Init
- * @Last Modified time: 2019-03-01 17:18:25
- */
 <template>
   <div>
-    <div v-show="!isSearch" class="content">
+    <div v-show="!isSearch" class="content" v-loading="isLoadings">
       <Header isHis="male" v-model="isSearch">
         <div class="logo" slot="left-icon">
           <img src="https://qidian.gtimg.com/qdm/img/logo-qdm.02fc8.svg" alt>
@@ -24,7 +18,7 @@
         <div class="banner">
           <!-- swiper -->
           <swiper :options="swiperOption">
-            <swiper-slide v-for="(item,index) in imgArr" :key="index">
+            <swiper-slide v-for="(item,index) in banner" :key="index">
               <img :src="item" alt>
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
@@ -78,11 +72,11 @@
             <span slot="title-desc" class="title-desc">起点编辑推荐</span>
             <div slot="content" class="module-slide">
               <swiper :options="swiperOption2">
-                <swiper-slide v-for="(item,index) in books" :key="index">
-                  <div class="book-ad">
-                    <img :src="item" alt>
-                    <span class="book-title">网游之止戈三国</span>
-                    <div class="book-author">我吃西红柿</div>
+                <swiper-slide v-for="(item,index) in HotBooks" :key="index">
+                  <div class="book-ad" @click="click_book(item._id)">
+                    <img :src="decodeURIComponent((item.cover).replace('/agent/',''))" alt>
+                    <span class="book-title">{{item.title}}</span>
+                    <div class="book-author">{{item.author}}</div>
                   </div>
                 </swiper-slide>
               </swiper>
@@ -104,17 +98,17 @@
             <span slot="title-desc" class="title-desc"></span>
             <div slot="content" class="module-slide">
               <ul class="btn-group">
-                <li class="active">热销榜</li>
-                <li>风云榜</li>
-                <li>签约榜</li>
-                <li>推荐榜</li>
+                <li class="active">热搜榜</li>
+                <li>潜力榜</li>
+                <li>好评榜</li>
+                <li>VIP排行榜</li>
               </ul>
               <swiper :options="swiperOption2">
-                <swiper-slide v-for="(item,index) in books" :key="index">
-                  <div class="book-ad">
-                    <img :src="item" alt>
-                    <span class="book-title">网游之止戈三国</span>
-                    <div class="book-author">我吃西红柿</div>
+                <swiper-slide v-for="(item,index) in HotSearchBooks" :key="index">
+                  <div class="book-ad" @click="click_book(item._id)">
+                    <img :src="decodeURIComponent((item.cover).replace('/agent/',''))" alt>
+                    <span class="book-title">{{item.title}}</span>
+                    <div class="book-author">{{item.author}}</div>
                   </div>
                 </swiper-slide>
               </swiper>
@@ -130,7 +124,7 @@
               <!-- 搜索结果显示 -->
               <div class="book-list">
                 <ul>
-                  <li class="book-li" v-for="item in result" :key="item._id">
+                  <li class="book-li" v-for="item in PotentialBooks.slice(0,4)" :key="item._id">
                     <a @click="click_book(item._id)">
                       <img
                         :src="decodeURIComponent((item.cover).replace('/agent/',''))"
@@ -171,30 +165,36 @@
             <span slot="title-desc" class="title-desc"></span>
             <div slot="content" class="module-slide">
               <ul class="btn-group">
-                <li class="active">玄幻奇幻</li>
-                <li>武侠仙侠</li>
-                <li>都市职场</li>
+                <li :class="{active:isActiveX=='xuanhuan'}" @click="isActiveX='xuanhuan'">玄幻奇幻</li>
+                <li :class="{active:isActiveX=='wuxia'}" @click="isActiveX='wuxia'">武侠仙侠</li>
+                <li :class="{active:isActiveX=='dushi'}" @click="isActiveX='dushi'">都市职场</li>
               </ul>
               <swiper :options="swiperOption2">
-                <swiper-slide v-for="(item,index) in books" :key="index">
-                  <div class="book-ad">
-                    <img :src="item" alt>
-                    <span class="book-title">网游之止戈三国</span>
-                    <div class="book-author">我吃西红柿</div>
+                <swiper-slide v-for="(item,index) in typeBooksX" :key="index">
+                  <div class="book-ad" @click="click_book(item._id)">
+                    <img
+                      :src="decodeURIComponent((item.cover).replace('/agent/',''))"
+                      :alt="item.title"
+                    >
+                    <span class="book-title">{{item.title}}</span>
+                    <div class="book-author">{{item.author}}</div>
                   </div>
                 </swiper-slide>
               </swiper>
               <ul class="btn-group">
-                <li class="active">历史军事</li>
-                <li>游戏体育</li>
-                <li>科幻灵异</li>
+                <li :class="{active:isActiveY=='lishi'}" @click="isActiveY='lishi'">历史军事</li>
+                <li :class="{active:isActiveY=='games'}" @click="isActiveY='games'">游戏体育</li>
+                <li :class="{active:isActiveY=='kehuan'}" @click="isActiveY='kehuan'">科幻灵异</li>
               </ul>
               <swiper :options="swiperOption2">
-                <swiper-slide v-for="(item,index) in books" :key="index">
-                  <div class="book-ad">
-                    <img :src="item" alt>
-                    <span class="book-title">网游之止戈三国</span>
-                    <div class="book-author">我吃西红柿</div>
+                <swiper-slide v-for="(item,index) in typeBooksY" :key="index">
+                  <div class="book-ad" @click="click_book(item._id)">
+                    <img
+                      :src="decodeURIComponent((item.cover).replace('/agent/',''))"
+                      :alt="item.title"
+                    >
+                    <span class="book-title">{{item.title}}</span>
+                    <div class="book-author">{{item.author}}</div>
                   </div>
                 </swiper-slide>
               </swiper>
@@ -214,7 +214,11 @@
               <!-- 搜索结果显示 -->
               <div class="book-list">
                 <ul>
-                  <li class="book-li" v-for="item in result" :key="item._id">
+                  <li
+                    class="book-li"
+                    v-for="item in RetenTionBooks.slice(refresh, refresh+5)"
+                    :key="item._id"
+                  >
                     <a @click="click_book(item._id)">
                       <img
                         :src="decodeURIComponent((item.cover).replace('/agent/',''))"
@@ -303,6 +307,7 @@ import Header from "@/components/Header";
 import Search from "@/components/search";
 import Footer from "@/components/Footer";
 import HomeCard from "@/components/HomeCard";
+import request from "@/http_";
 export default {
   components: {
     Header,
@@ -314,104 +319,43 @@ export default {
   },
   data() {
     return {
-      imgArr: [
+      isLoadings: true,
+      HotBooks: [], // 热门小说
+      HotSearchBooks: [], // 热搜榜
+      PotentialBooks: [], // 潜力榜
+      PraiseBooks: [], // 好评
+      VipBooks: [], // VIP
+      NewBooks: [], // 新书
+      RetenTionBooks: [], // 读者存留率top100
+      XuanHuanBooks: null, // 玄幻
+      QiHuanBooks: null, // 奇幻
+      WuXiaBooks: null, // 奇幻
+      XianXiaBooks: null, // 奇幻
+      DuShiBooks: null, // 奇幻
+      LiShiBooks: null, // 奇幻
+      GameBooks: null, // 奇幻
+      KeHuanBooks: null, // 奇幻
+      QiHuanBooks: null, // 奇幻
+      Types: [
+        { XuanHuanBooks: "玄幻" },
+        { QiHuanBooks: "奇幻" },
+        { WuXiaBooks: "武侠" },
+        { XianXiaBooks: "仙侠" },
+        { DuShiBooks: "都市" },
+        { LiShiBooks: "历史" },
+        { GameBooks: "游戏" },
+        { KeHuanBooks: "科幻" },
+        { LingYiBooks: "灵异" }
+      ],
+      refresh: 0, //刷新 值
+      isActiveX: "xuanhuan", // 用来判断分类推荐当前选中类别
+      isActiveY: "lishi", // 用来判断分类推荐当前选中类别
+      banner: [
         "//qidian.qpic.cn/qidian_common/349573/28b9d57602d5f02139787ca9a9e361b6/0",
         "//qidian.qpic.cn/qidian_common/349573/185a83020cf454940b3074ca799e78c7/0",
         "//qidian.qpic.cn/qidian_common/349573/7d08609bf6b6f1370c714d157d43c8b2/0",
         "//qidian.qpic.cn/qidian_common/349573/2adf5c980c73a896b64dff676fb2d49d/0",
         "//qidian.qpic.cn/qidian_common/349573/2198d860477a1951e8e5ff0bb4d54dfd/0"
-      ],
-      books: [
-        "//bookcover.yuewen.com/qdbimg/349573/1013646681/150",
-        "//bookcover.yuewen.com/qdbimg/349573/1012710206/150",
-        "//bookcover.yuewen.com/qdbimg/349573/1013048595/150",
-        "//bookcover.yuewen.com/qdbimg/349573/1013048595/150",
-        "//bookcover.yuewen.com/qdbimg/349573/1013411241/150",
-        "//bookcover.yuewen.com/qdbimg/349573/1013411241/150",
-        "//bookcover.yuewen.com/qdbimg/349573/1013411241/150",
-        "//bookcover.yuewen.com/qdbimg/349573/1013411241/150",
-        "//bookcover.yuewen.com/qdbimg/349573/1013411241/150",
-        "//bookcover.yuewen.com/qdbimg/349573/1013411241/150",
-        "//bookcover.yuewen.com/qdbimg/349573/1013411241/150",
-        "//bookcover.yuewen.com/qdbimg/349573/1013411241/150",
-        "//bookcover.yuewen.com/qdbimg/349573/1013411241/150"
-      ],
-      result: [
-        {
-          _id: "5a4cb5406c81b81b70303462",
-          hasCp: true,
-          title: "诸天投影",
-          aliases: "",
-          cat: "科幻",
-          author: "裴屠狗",
-          site: "zhuishuvip",
-          cover:
-            "/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F2202193%2F2202193_3fe76aece2f14d5da7fd7b67d43884e1.jpg%2F",
-          shortIntro:
-            "龙蛇，七龙珠，阳神...........顾少伤投影诸天，一步步踏上征途，直至，霸凌诸天！",
-          lastChapter: "第十五卷 第1252章 西方世界的无冕之王",
-          retentionRatio: 71.6,
-          banned: 0,
-          allowMonthly: false,
-          latelyFollower: 20946,
-          wordCount: 4029314,
-          contentType: "txt",
-          superscript: "",
-          sizetype: -1,
-          highlight: {
-            title: ["诸", "天", "投", "影"]
-          }
-        },
-        {
-          _id: "5a4cb5406c81b81b70303463",
-          hasCp: true,
-          title: "诸天投影",
-          aliases: "",
-          cat: "科幻",
-          author: "裴屠狗",
-          site: "zhuishuvip",
-          cover:
-            "/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F2202193%2F2202193_3fe76aece2f14d5da7fd7b67d43884e1.jpg%2F",
-          shortIntro:
-            "龙蛇，七龙珠，阳神...........顾少伤投影诸天，一步步踏上征途，直至，霸凌诸天！",
-          lastChapter: "第十五卷 第1252章 西方世界的无冕之王",
-          retentionRatio: 71.6,
-          banned: 0,
-          allowMonthly: false,
-          latelyFollower: 20946,
-          wordCount: 4029314,
-          contentType: "txt",
-          superscript: "",
-          sizetype: -1,
-          highlight: {
-            title: ["诸", "天", "投", "影"]
-          }
-        },
-        {
-          _id: "5a4cb5406c81b81b7030341",
-          hasCp: true,
-          title: "诸天投影",
-          aliases: "",
-          cat: "科幻",
-          author: "裴屠狗",
-          site: "zhuishuvip",
-          cover:
-            "/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F2202193%2F2202193_3fe76aece2f14d5da7fd7b67d43884e1.jpg%2F",
-          shortIntro:
-            "龙蛇，七龙珠，阳神...........顾少伤投影诸天，一步步踏上征途，直至，霸凌诸天！",
-          lastChapter: "第十五卷 第1252章 西方世界的无冕之王",
-          retentionRatio: 71.6,
-          banned: 0,
-          allowMonthly: false,
-          latelyFollower: 20946,
-          wordCount: 4029314,
-          contentType: "txt",
-          superscript: "",
-          sizetype: -1,
-          highlight: {
-            title: ["诸", "天", "投", "影"]
-          }
-        }
       ],
       swiperOption: {
         autoplay: true,
@@ -426,7 +370,92 @@ export default {
       isSearch: false //是否搜索
     };
   },
-  computed: {}
+  computed: {
+    // 分类推荐返回
+    typeBooksX() {
+      if (this.isActiveX === "xuanhuan") {
+        return this.XuanHuanBooks;
+      }
+      if (this.isActiveX === "wuxia") {
+        return this.XianXiaBooks;
+      }
+      if (this.isActiveX === "dushi") {
+        return this.DuShiBooks;
+      }
+    },
+    typeBooksY() {
+      if (this.isActiveY === "lishi") {
+        return this.LiShiBooks;
+      }
+      if (this.isActiveY === "games") {
+        return this.GameBooks;
+      }
+      if (this.isActiveY === "kehuan") {
+        return this.KeHuanBooks;
+      }
+    }
+  },
+  created() {
+    // 请求热门书籍
+    this.getBooks(this.$config.LISTID._TOPID, res => {
+      this.HotBooks = res.data.ranking.books;
+    });
+    // 请求热搜榜
+    this.getBooks(this.$config.LISTID._HOTSEARCHID, res => {
+      this.HotSearchBooks = res.data.ranking.books;
+    });
+    // 请求潜力榜
+    this.getBooks(this.$config.LISTID._POTENTIALID, res => {
+      this.PotentialBooks = res.data.ranking.books;
+    });
+    // 好评
+    this.getBooks(this.$config.LISTID._PRAISEID, res => {
+      this.PraiseBooks = res.data.ranking.books;
+    });
+    // Vip
+    this.getBooks(this.$config.LISTID._VIPID, res => {
+      this.VipBooks = res.data.ranking.books;
+    });
+    // 新书榜
+    this.getBooks(this.$config.LISTID._NEWBOOKID, res => {
+      this.NewBooks = res.data.ranking.books;
+    });
+    this.getBooks(this.$config.LISTID._RENTENTION, res => {
+      this.RetenTionBooks = res.data.ranking.books;
+    });
+    // 请求分类
+    this.Types.forEach(item => {
+      this.getCateBooks(Object.keys(item)[0], Object.values(item)[0]);
+    });
+  },
+  watch: {
+    HotBooks(val) {
+      this.isLoadings = false;
+    }
+  },
+  methods: {
+    // 跳转书籍详情
+    click_book(_id) {
+      this.$router.push({
+        path: "/book/" + _id
+      });
+    },
+    // 请求榜单
+    async getBooks(_id, callback) {
+      const res = await request.get(this.$config.LIST_URL + _id);
+      if (res.status === 200) callback(res);
+    },
+    // 分类请求
+    async getCateBooks(keys, query, limit = 4) {
+      const res = await request.get(
+        this.$config.FIRSTBOOKCATEGORIE +
+          query +
+          this.$config.ENDBOOKCATEGORIE +
+          limit
+      );
+      this[keys] = res.data.books;
+    }
+  }
 };
 </script>
 
