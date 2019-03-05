@@ -8,6 +8,8 @@ import SearchResult from "@/pages/SearchResult";
 import BookDeatils from "@/pages/Books/BookDeatils"
 import BookChapter from "@/pages/Books/BookChapter"
 import BookContent from "@/pages/Books/BookContent"
+import Catrgory from "@/pages/Category"
+
 Vue.use(Router);
 
 export default new Router({
@@ -49,6 +51,18 @@ export default new Router({
       path: '/book/:id/read',
       name: 'BookContent',
       component: BookContent
+    },
+    {
+      path: '/catrgory',
+      name: 'Catrgory',
+      component: Catrgory,
+      children: [{
+          path: 'female'
+        },
+        {
+          path: 'male'
+        }
+      ]
     },
     {
       path: "*",

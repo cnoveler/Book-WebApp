@@ -1,15 +1,12 @@
-/*
- * @Author: Init 
- * @Date: 2019-03-01 16:09:28 
- * @Last Modified by: Init
- * @Last Modified time: 2019-03-01 16:17:34
- */
 <template>
   <div>
     <div class="module">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span class="title">
+            <slot name="left-red">
+              <span class="left-red"></span>
+            </slot>
             <slot name="title">
               <h3>热门小说</h3>
             </slot>
@@ -51,7 +48,7 @@ export default {};
           margin-right: 5px;
         }
       }
-      .title::before {
+      .left-red::before {
         display: inline-block;
         box-sizing: border-box;
         position: relative;

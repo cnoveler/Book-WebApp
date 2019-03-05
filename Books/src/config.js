@@ -4,8 +4,6 @@ const BASE_URL_V2 = "/zhuishu"
 const BASE_STATIC_URL = "http://statics.zhuishushenqi.com" // 默认请求 静态资源地址
 const BASE_CHAPTER_CONTENT = "/chapter" // 获取章节内容
 
-
-
 // https://novel.juhe.im/
 const BOOK_SHORT_REVIEWS = BASE_URL + "/book/short-reviews?book=" // 书籍短评
 
@@ -17,9 +15,11 @@ const SEARCH_COMPLETE_QUERY = BASE_URL_V2 + "/book/auto-complete?query=" // 搜�
 const SEARCH_KEWORD_RESULT = BASE_URL_V2 + "/book/fuzzy-search?query=" // 搜索结果
 const LIST_URL = BASE_URL_V2 + "/ranking/" // 榜单
 
-
 const FIRSTBOOKCATEGORIE = BASE_URL_V2 + "/book/by-categories?gender=male&type=hot&major=" // 分类
 const ENDBOOKCATEGORIE = "&minor=&start=0&limit="
+
+const CATBOOKS = BASE_URL_V2 + "/cats/lv2/statistics" // 总分类  包含分类书籍数
+const CATBOOKS_LV2 = BASE_URL_V2 + "/cats/lv2" // 二级分类
 
 const LISTID = {
   // male
@@ -53,5 +53,7 @@ export default {
   LIST_URL,
   LISTID,
   FIRSTBOOKCATEGORIE,
-  ENDBOOKCATEGORIE
+  ENDBOOKCATEGORIE,
+  CATBOOKS,
+  CATBOOKS_LV2
 }

@@ -10,8 +10,8 @@
             <use xlink:href="#icon-user"></use>
           </svg>
         </div>
-        <div slot="tit1" @click="$router.push({name:'male'})">男生</div>
-        <div slot="tit2" @click="$router.push({name:'female'})">女生</div>
+        <div slot="tit1" @click="$router.push({ path: '/catrgory#male' })">男生</div>
+        <div slot="tit2" @click="$router.push({ path: '/catrgory#female' })">女生</div>
       </Header>
       <div class="module-content">
         <!-- 轮播图 -->
@@ -290,10 +290,10 @@
             </div>
           </HomeCard>
         </div>
-        <div class="footer">
-          <Footer/>
-        </div>
       </div>
+    </div>
+    <div class="footer">
+      <Footer/>
     </div>
     <div class="search-page" v-show="isSearch">
       <Search v-model="isSearch"/>
@@ -769,6 +769,7 @@ export default {
     }
   }
 }
+
 .footer {
   width: 100%;
   position: relative;
