@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header :isHis="isMale?'male':'female'" v-model="isSearch">
-      <div slot="left-icon">
+      <div slot="left-icon" onclick="history.back(-1)">
         <i class="el-icon-arrow-left"></i>
         <span>分类</span>
       </div>
@@ -28,7 +28,12 @@
                   :key="index"
                   v-show="k.major === item.name"
                 >
-                  <div class="tags" v-for="i in k.mins" :key="i">{{i}}</div>
+                  <div
+                    @click="click_tags(item.name,i)"
+                    class="tags"
+                    v-for="i in k.mins"
+                    :key="i"
+                  >{{i}}</div>
                 </li>
               </ul>
             </div>
@@ -83,6 +88,22 @@ export default {
     }
   },
   methods: {
+    // 点击标签,跳转分类详情
+    click_tags(major, minor) {
+      this.$router.push({
+        // gender=male&type=hot&major=玄幻&minor=东方玄幻&start=0&limit=20
+        name: "CategoryDetails",
+        query: {
+          gender: this.isMale ? "male" : "female",
+          type: "hot",
+          major,
+          minor,
+          start: 0,
+          limit: 20
+        }
+      });
+      console.log(major, minor);
+    },
     // 切换频道
     click_p(t) {
       if (t === "male") {
@@ -102,7 +123,6 @@ export default {
     async getBooksCatsLv2() {
       const res = await request.get(this.$config.CATBOOKS_LV2);
       this.catBooksLv2 = res.data;
-      console.log(this.catBooksLv2);
     }
   },
   created() {
@@ -141,12 +161,15 @@ export default {
         justify-content: center;
         flex-wrap: nowrap;
         padding: 5px;
-        margin-left: 5px;
+        margin-left: 20px;
         margin-top: 5px;
-        font-size: 14px;
+        font-size: 0.7655rem;
         border-radius: 20px;
         border: 1px solid #aaa;
       }
+    }
+    .title {
+      font-size: 14px;
     }
     .title-desc {
       margin-left: 10px;

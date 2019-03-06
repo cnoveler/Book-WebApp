@@ -291,10 +291,11 @@
           </HomeCard>
         </div>
       </div>
+      <div class="footer">
+        <Footer/>
+      </div>
     </div>
-    <div class="footer">
-      <Footer/>
-    </div>
+
     <div class="search-page" v-show="isSearch">
       <Search v-model="isSearch"/>
     </div>

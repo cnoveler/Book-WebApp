@@ -1,9 +1,3 @@
-/*
- * @Author: Init 
- * @Date: 2019-02-28 14:32:10 
- * @Last Modified by: Init
- * @Last Modified time: 2019-03-01 14:58:09
- */
 // 头部 
 <template>
   <div>
@@ -176,7 +170,7 @@ header {
         border: 1px solid #ed424b;
         justify-content: center;
         line-height: 0 0.95rem;
-        padding: 0 1.2rem;
+        padding: 0.22rem 1.2rem;
         a {
           color: #ed424b;
           text-decoration: none;
@@ -189,7 +183,7 @@ header {
         border-radius: 0 4px 4px 0;
         justify-content: center;
         line-height: 0 0.95rem;
-        padding: 0 1.2rem;
+        padding: 0.22rem 1.2rem;
         a {
           text-decoration: none;
           color: #ed424b;

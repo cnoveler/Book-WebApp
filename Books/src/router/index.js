@@ -8,7 +8,9 @@ import SearchResult from "@/pages/SearchResult";
 import BookDeatils from "@/pages/Books/BookDeatils"
 import BookChapter from "@/pages/Books/BookChapter"
 import BookContent from "@/pages/Books/BookContent"
-import Catrgory from "@/pages/Category"
+import Catrgory from "@/pages/Category/Category"
+import CategoryDetails from "@/pages/Category/CategoryDetails"
+
 
 Vue.use(Router);
 
@@ -63,6 +65,14 @@ export default new Router({
           path: 'male'
         }
       ]
+    },
+    {
+      path: '/catrgory/details',
+      name: 'CategoryDetails',
+      component: CategoryDetails,
+      children: [{
+        path: ':gender&:type&:major&:minor&:start&:limit'
+      }]
     },
     {
       path: "*",

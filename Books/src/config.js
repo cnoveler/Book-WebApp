@@ -15,8 +15,7 @@ const SEARCH_COMPLETE_QUERY = BASE_URL_V2 + "/book/auto-complete?query=" // 搜�
 const SEARCH_KEWORD_RESULT = BASE_URL_V2 + "/book/fuzzy-search?query=" // 搜索结果
 const LIST_URL = BASE_URL_V2 + "/ranking/" // 榜单
 
-const FIRSTBOOKCATEGORIE = BASE_URL_V2 + "/book/by-categories?gender=male&type=hot&major=" // 分类
-const ENDBOOKCATEGORIE = "&minor=&start=0&limit="
+const FIRSTBOOKCATEGORIE = BASE_URL_V2 + "/book/by-categories" // 分类主题书籍
 
 const CATBOOKS = BASE_URL_V2 + "/cats/lv2/statistics" // 总分类  包含分类书籍数
 const CATBOOKS_LV2 = BASE_URL_V2 + "/cats/lv2" // 二级分类
@@ -53,7 +52,6 @@ export default {
   LIST_URL,
   LISTID,
   FIRSTBOOKCATEGORIE,
-  ENDBOOKCATEGORIE,
   CATBOOKS,
   CATBOOKS_LV2
 }
