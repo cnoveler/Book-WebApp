@@ -10,7 +10,7 @@ import BookChapter from "@/pages/Books/BookChapter"
 import BookContent from "@/pages/Books/BookContent"
 import Catrgory from "@/pages/Category/Category"
 import CategoryDetails from "@/pages/Category/CategoryDetails"
-
+import Ranking from "@/pages/Ranking/Ranking"
 
 Vue.use(Router);
 
@@ -72,6 +72,15 @@ export default new Router({
       component: CategoryDetails,
       children: [{
         path: ':gender&:type&:major&:minor&:start&:limit'
+      }]
+    },
+    {
+      path: '/ranking/',
+      name: 'Ranking',
+      component: Ranking,
+      children: [{
+        path: ':gender',
+        component: Ranking,
       }]
     },
     {

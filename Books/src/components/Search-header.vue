@@ -68,7 +68,8 @@ export default {
       if (this.$route.fullPath == "/") {
         return this.$emit("update:isSearched", false);
       }
-      this.$router.push({ name: "Home" });
+      // this.$router.push({ name: "Home" });
+      history.back(-1);
     }
   }
 };

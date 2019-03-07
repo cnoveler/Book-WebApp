@@ -20,6 +20,9 @@ const FIRSTBOOKCATEGORIE = BASE_URL_V2 + "/book/by-categories" // 分类主题�
 const CATBOOKS = BASE_URL_V2 + "/cats/lv2/statistics" // 总分类  包含分类书籍数
 const CATBOOKS_LV2 = BASE_URL_V2 + "/cats/lv2" // 二级分类
 
+const RANKINGURL = BASE_URL_V2 + "/ranking/" // 单一排行榜
+const RANKINGALLURL = BASE_URL_V2 + "/ranking/gender" // 所有排行榜
+
 const LISTID = {
   // male
   _TOPID: "54d42d92321052167dfb75e3", // 追书最热榜 Top100
@@ -39,7 +42,6 @@ const LISTID = {
   _FREEID: "5a39ca7dfc84c2b8ef82ff4f", // 免费榜
 }
 
-
 export default {
   SEARCH_HOT_URL,
   BASE_STATIC_URL,
@@ -53,5 +55,7 @@ export default {
   LISTID,
   FIRSTBOOKCATEGORIE,
   CATBOOKS,
-  CATBOOKS_LV2
+  CATBOOKS_LV2,
+  RANKINGURL,
+  RANKINGALLURL
 }

@@ -32,7 +32,7 @@
         </div>
         <!-- 导航 -->
         <ul class="nav-list">
-          <li>
+          <li @click="$router.push({ path: '/catrgory#male' })">
             <div class="icon icon-sort"></div>
             <div class="title">分类</div>
           </li>
@@ -330,13 +330,12 @@ export default {
       RetenTionBooks: [], // 读者存留率top100
       XuanHuanBooks: null, // 玄幻
       QiHuanBooks: null, // 奇幻
-      WuXiaBooks: null, // 奇幻
-      XianXiaBooks: null, // 奇幻
-      DuShiBooks: null, // 奇幻
-      LiShiBooks: null, // 奇幻
-      GameBooks: null, // 奇幻
-      KeHuanBooks: null, // 奇幻
-      QiHuanBooks: null, // 奇幻
+      WuXiaBooks: null, // 武侠
+      XianXiaBooks: null, // 仙侠
+      DuShiBooks: null, // 都市
+      LiShiBooks: null, // 历史
+      GameBooks: null, // 游戏
+      KeHuanBooks: null, // 科幻
       Types: [
         { XuanHuanBooks: "玄幻" },
         { QiHuanBooks: "奇幻" },
@@ -450,10 +449,12 @@ export default {
     async getCateBooks(keys, query, limit = 4) {
       const res = await request.get(
         this.$config.FIRSTBOOKCATEGORIE +
+          "?gender=male&type=hot&major=" +
           query +
-          this.$config.ENDBOOKCATEGORIE +
+          "&limit=" +
           limit
       );
+      console.log(query);
       this[keys] = res.data.books;
     }
   }

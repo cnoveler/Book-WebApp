@@ -1,66 +1,74 @@
 <template>
   <div class="body">
-    <Header ref="header" v-model="isSearch" v-show="!isFixed">
-      <div slot="left-icon" onclick="history.back(-1)">
-        <i class="el-icon-arrow-left"></i>
-        <span>{{minor}}</span>
-      </div>
-      <span slot="header-content"></span>
-    </Header>
-    <div class="content">
-      <div class="content-filter" ref="content-filter">
-        <ul class="filter-list">
-          <li class="filter-li" @click="type = 'hot'">
-            <span :class="{active:type === 'hot'}">最热</span>
-          </li>
-          <li class="filter-li" @click="type = 'new'">
-            <span :class="{active:type === 'new'}">新书</span>
-          </li>
-          <li class="filter-li" @click="type = 'reputation'">
-            <span :class="{active:type === 'reputation'}">好评</span>
-          </li>
-          <li class="filter-li" @click="type = 'over'">
-            <span :class="{active:type === 'over'}">完结</span>
-          </li>
-        </ul>
-      </div>
-      <!-- 搜索结果显示 -->
-      <div class="book-list" v-show="results.length > 0">
-        <ul>
-          <li class="book-li" v-for="item in results" :key="item._id">
-            <a @click="click_book(item._id)">
-              <img :src="decodeURIComponent((item.cover).replace('/agent/',''))" :alt="item.title">
-              <div class="book-info">
-                <div :class="['book-title']">
-                  <h3>{{item.title}}</h3>
-                </div>
-                <div class="book-intro">{{item.shortIntro}}</div>
-                <div class="book-meta">
-                  <div class="book-author">
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-user"></use>
-                    </svg>
-                    <span>{{item.author}}</span>
+    <div v-show="!isSearch">
+      <Header ref="header" v-model="isSearch" v-show="!isFixed">
+        <div slot="left-icon" onclick="history.back(-1)">
+          <i class="el-icon-arrow-left"></i>
+          <span>{{minor}}</span>
+        </div>
+        <span slot="header-content"></span>
+      </Header>
+      <div class="content">
+        <div class="content-filter" ref="content-filter">
+          <ul class="filter-list">
+            <li class="filter-li" @click="type = 'hot'">
+              <span :class="{active:type === 'hot'}">最热</span>
+            </li>
+            <li class="filter-li" @click="type = 'new'">
+              <span :class="{active:type === 'new'}">新书</span>
+            </li>
+            <li class="filter-li" @click="type = 'reputation'">
+              <span :class="{active:type === 'reputation'}">好评</span>
+            </li>
+            <li class="filter-li" @click="type = 'over'">
+              <span :class="{active:type === 'over'}">完结</span>
+            </li>
+          </ul>
+        </div>
+        <!-- 搜索结果显示 -->
+        <div class="book-list" v-show="results.length > 0">
+          <ul>
+            <li class="book-li" v-for="item in results" :key="item._id">
+              <a @click="click_book(item._id)">
+                <img
+                  :src="decodeURIComponent((item.cover).replace('/agent/',''))"
+                  :alt="item.title"
+                >
+                <div class="book-info">
+                  <div :class="['book-title']">
+                    <h3>{{item.title}}</h3>
                   </div>
-                  <div class="book-tags">
-                    <div class="gray">{{item.cat}}</div>
-                    <div class="red">连载</div>
-                    <div class="blue">{{ parseInt((item.wordCount / 10000) * 10) / 10 + "万字"}}</div>
+                  <div class="book-intro">{{item.shortIntro}}</div>
+                  <div class="book-meta">
+                    <div class="book-author">
+                      <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-user"></use>
+                      </svg>
+                      <span>{{item.author}}</span>
+                    </div>
+                    <div class="book-tags">
+                      <div class="gray">{{item.cat}}</div>
+                      <div class="red">连载</div>
+                      <div class="blue">{{ parseInt((item.wordCount / 10000) * 10) / 10 + "万字"}}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="null" v-show="results.length <= 0">
-        <div class="null-box">
-          <img src="@/assets/image/null.svg" alt>
-          <div class="null-text">
-            <span>还木有数据( •̀ ω •́ )！</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="null" v-show="results.length <= 0">
+          <div class="null-box">
+            <img src="@/assets/image/null.svg" alt>
+            <div class="null-text">
+              <span>还木有数据( •̀ ω •́ )！</span>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="search-page" v-show="isSearch">
+      <Search v-model="isSearch"/>
     </div>
   </div>
 </template>
@@ -140,11 +148,14 @@ export default {
       // 判断是否触底
       if (this.clientHeight + this.scrollTop >= this.scrollHight - 100) {
         this.start = parseInt(this.start) + 20;
-        console.log(this.start);
       }
     });
   },
   methods: {
+    // 点击书籍
+    click_book(_id) {
+      this.$router.push({ name: "BookDeatils", params: { id: _id } });
+    },
     // 当滑动滚动条的时候过滤转为固定
     theFilterisFixed() {
       this.$refs["content-filter"].style.position = "fixed";
@@ -189,7 +200,7 @@ export default {
     width: calc(100% - 15px);
     .book-li {
       width: 100%;
-      margin: 0px 0 10px 0;
+      margin: 5px 0 10px 0;
       display: flex;
       padding-bottom: 5px;
       border-bottom: 1px solid #f0f1f2;
@@ -265,7 +276,7 @@ export default {
   .content-filter {
     width: 100%;
     height: 50px;
-    z-index: 99;
+    z-index: 1;
     background: #fff;
     ul,
     li {

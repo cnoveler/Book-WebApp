@@ -1,48 +1,50 @@
 <template>
   <div>
-    <Header :isHis="isMale?'male':'female'" v-model="isSearch">
-      <div slot="left-icon" onclick="history.back(-1)">
-        <i class="el-icon-arrow-left"></i>
-        <span>分类</span>
+    <div v-show="!isSearch">
+      <Header :isHis="isMale?'male':'female'" v-model="isSearch">
+        <div slot="left-icon" onclick="history.back(-1)">
+          <i class="el-icon-arrow-left"></i>
+          <span>分类</span>
+        </div>
+        <div slot="tit1" @click="click_p('male')">男生</div>
+        <div slot="tit2" @click="click_p('female')">女生</div>
+      </Header>
+      <div class="content">
+        <article class="card" v-for="(item, index) in gcatBooks" :key="index">
+          <section>
+            <HomeCard>
+              <span slot="left-red"></span>
+              <div slot="title" class="title">
+                <h3>{{item.name}}</h3>
+              </div>
+              <span slot="title-desc" class="title-desc">共 {{item.bookCount}} 本作品</span>
+              <span slot="more" class="more">
+                <i class="el-icon-arrow-right"></i>
+              </span>
+              <div slot="content" class="body">
+                <ul>
+                  <li
+                    class="body-tags"
+                    v-for="(k,index) in gcatBooksLv2"
+                    :key="index"
+                    v-show="k.major === item.name"
+                  >
+                    <div
+                      @click="click_tags(item.name,i)"
+                      class="tags"
+                      v-for="i in k.mins"
+                      :key="i"
+                    >{{i}}</div>
+                  </li>
+                </ul>
+              </div>
+            </HomeCard>
+          </section>
+        </article>
       </div>
-      <div slot="tit1" @click="click_p('male')">男生</div>
-      <div slot="tit2" @click="click_p('female')">女生</div>
-    </Header>
-    <div class="content">
-      <article class="card" v-for="(item, index) in gcatBooks" :key="index">
-        <section>
-          <HomeCard>
-            <span slot="left-red"></span>
-            <div slot="title" class="title">
-              <h3>{{item.name}}</h3>
-            </div>
-            <span slot="title-desc" class="title-desc">共 {{item.bookCount}} 本作品</span>
-            <span slot="more" class="more">
-              <i class="el-icon-arrow-right"></i>
-            </span>
-            <div slot="content" class="body">
-              <ul>
-                <li
-                  class="body-tags"
-                  v-for="(k,index) in gcatBooksLv2"
-                  :key="index"
-                  v-show="k.major === item.name"
-                >
-                  <div
-                    @click="click_tags(item.name,i)"
-                    class="tags"
-                    v-for="i in k.mins"
-                    :key="i"
-                  >{{i}}</div>
-                </li>
-              </ul>
-            </div>
-          </HomeCard>
-        </section>
-      </article>
-    </div>
-    <div class="footer">
-      <Footer/>
+      <div class="footer">
+        <Footer/>
+      </div>
     </div>
     <div class="search-page" v-show="isSearch">
       <Search v-model="isSearch"/>
