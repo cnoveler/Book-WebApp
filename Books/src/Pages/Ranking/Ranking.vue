@@ -18,11 +18,11 @@
         <article
           class="module"
           v-for="(item, index) in allBooksRank[isMale]"
-          v-show="index >= 5"
+          v-show="index <= 5"
           :key="index"
         >
           <section class="module-list">
-            <div class="img">
+            <div class="img" @click="click_Ranks(item._id)">
               <img :src="bgArr[index>3?Math.floor((Math.random()*3)+1):index]" alt>
               <div class="img-top-title">
                 <h3>{{item.shortTitle}}</h3>
@@ -35,7 +35,12 @@
             </div>
             <div class="list-book-title">
               <ul class="list-book" v-for="(items, index) in Books[index]" :key="index">
-                <li class="list" v-for="(item, index) in items.slice(0, 5)" :key="index">
+                <li
+                  class="list"
+                  @click="click_book(item._id)"
+                  v-for="(item, index) in items.slice(0, 5)"
+                  :key="index"
+                >
                   <div class="title">
                     <h3 class="index">{{index+1}}.</h3>
                     <h4>{{item.title}}</h4>
@@ -82,6 +87,11 @@ export default {
     };
   },
   watch: {
+    isMale(val) {
+      console.log(this.allBooksRank);
+      this.Books = [];
+      this.getAllBooks();
+    },
     allBooksRank(val) {
       if (val.ok) {
         this.getAllBooks();
@@ -90,16 +100,35 @@ export default {
   },
   created() {
     this.isMale = this.$route.params.gender;
-    console.log(this.isMale);
     this.getBooksAllRanking();
-    // 请求top 最热male
-    this.getBooksRanking(this.$config.LISTID._TOPID, res => {
-      this.topMaleBooks = res.data.ranking.books;
-    });
   },
   methods: {
+    // 点击主题书签
+    click_Ranks(id) {
+      this.$router.push({
+        name: "RankingDetail",
+        params: {
+          id,
+          gender: this.isMale
+        }
+      });
+    },
+    // 点击书籍
+    click_book(id) {
+      this.$router.push({
+        name: "BookDeatils",
+        params: {
+          id
+        }
+      });
+    },
     // 点击频道
-    click_title(t) {},
+    click_title(t) {
+      this.$router.push({
+        path: "/ranking/" + t
+      });
+      this.isMale = t;
+    },
     // 请求榜单
     async getBooksRanking(_id, callback) {
       const res = await request.get(this.$config.RANKINGURL + _id);
@@ -204,6 +233,6 @@ export default {
   }
 }
 .footer {
-  margin-top: 50px;
+  margin-top: 60px;
 }
 </style>

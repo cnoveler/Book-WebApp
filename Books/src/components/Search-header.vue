@@ -62,14 +62,15 @@ export default {
       this.$refs["search-input"].focus();
     },
     click_close() {
-      if (this.$route.fullPath == "/bookshelf/my") {
-        return this.$emit("update:isSearched", false);
-      }
-      if (this.$route.fullPath == "/") {
-        return this.$emit("update:isSearched", false);
-      }
+      // if (this.$route.fullPath == "/bookshelf/my") {
+      //   return this.$emit("update:isSearched", false);
+      // }
+      // if (this.$route.fullPath == "/") {
+      //   return this.$emit("update:isSearched", false);
+      // }
+      return this.$emit("update:isSearched", false);
       // this.$router.push({ name: "Home" });
-      history.back(-1);
+      // history.back(-1);
     }
   }
 };

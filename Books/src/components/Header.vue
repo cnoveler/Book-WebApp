@@ -123,8 +123,7 @@ header {
   width: 100%;
   height: 3.5655rem;
   z-index: 99;
-  background: #f4f5f6;
-  border-bottom: 1px solid #eee;
+  // background: #f4f5f6;
   display: flex;
   justify-content: center;
   // background: #fff;
@@ -133,7 +132,7 @@ header {
     height: 3.5655rem;
     display: flex;
     // border-bottom: 1px solid #ccc;
-    background: #f4f5f6;
+    // background: #f4f5f6;
     justify-content: space-between;
     align-items: center;
     -moz-user-select: none; /* Firefox私有属性 */
