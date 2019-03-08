@@ -61,16 +61,29 @@
 项目截图
 --
 
-##### 首页
-![](https://github.com/moxier/Book-WebApp/blob/master/img/home.png)
+##### 书籍排行榜
+![](https://github.com/moxier/Book-WebApp/blob/master/img/ranking.png)
 
-![](https://github.com/moxier/Book-WebApp/blob/master/img/home-header.png)
+![](https://github.com/moxier/Book-WebApp/blob/master/img/ranking-details.png)
+
+##### 书籍分类
+![](https://github.com/moxier/Book-WebApp/blob/master/img/category.png)
+
+![](https://github.com/moxier/Book-WebApp/blob/master/img/category-details.png)
+
+##### 书籍阅读
+![](https://github.com/moxier/Book-WebApp/blob/master/img/read.png)
+
+![](https://github.com/moxier/Book-WebApp/blob/master/img/read-options.png)
+
+![](https://github.com/moxier/Book-WebApp/blob/master/img/read-option-font.png)
+
+![](https://github.com/moxier/Book-WebApp/blob/master/img/read-chapter.png)
 
 ##### 书架
 ![](https://github.com/moxier/Book-WebApp/blob/master/img/bookcase.png)
 
 ![](https://github.com/moxier/Book-WebApp/blob/master/img/bookcase-del.png)
-
 
 ##### 搜索
 ![](https://github.com/moxier/Book-WebApp/blob/master/img/search.png)
@@ -85,23 +98,7 @@
 ##### 书籍章节
 ![](https://github.com/moxier/Book-WebApp/blob/master/img/bookchapter.png)
 
-##### 书籍阅读
-![](https://github.com/moxier/Book-WebApp/blob/master/img/read.png)
+##### 首页
+![](https://github.com/moxier/Book-WebApp/blob/master/img/home.png)
 
-![](https://github.com/moxier/Book-WebApp/blob/master/img/read-options.png)
-
-![](https://github.com/moxier/Book-WebApp/blob/master/img/read-option-font.png)
-
-![](https://github.com/moxier/Book-WebApp/blob/master/img/read-chapter.png)
-
-
-##### 书籍分类
-![](https://github.com/moxier/Book-WebApp/blob/master/img/category.png)
-
-![](https://github.com/moxier/Book-WebApp/blob/master/img/category-details.png)
-
-
-##### 书籍排行榜
-![](https://github.com/moxier/Book-WebApp/blob/master/img/ranking.png)
-
-![](https://github.com/moxier/Book-WebApp/blob/master/img/ranking-details.png)
+![](https://github.com/moxier/Book-WebApp/blob/master/img/home-header.png)
