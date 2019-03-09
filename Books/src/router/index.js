@@ -12,7 +12,7 @@ import Catrgory from "@/pages/Category/Category"
 import CategoryDetails from "@/pages/Category/CategoryDetails"
 import Ranking from "@/pages/Ranking/Ranking"
 import RankingDetail from "@/pages/Ranking/RankingDetail"
-
+import GoTop from "@/components/GoTop"
 Vue.use(Router);
 
 export default new Router({
@@ -59,13 +59,6 @@ export default new Router({
       path: '/catrgory',
       name: 'Catrgory',
       component: Catrgory,
-      children: [{
-          path: 'female'
-        },
-        {
-          path: 'male'
-        }
-      ]
     },
     {
       path: '/catrgory/details',
@@ -76,18 +69,21 @@ export default new Router({
       }]
     },
     {
-      path: '/ranking',
+      path: '/ranking/:gender',
       name: 'Ranking',
       component: Ranking,
-      children: [{
-        path: ':gender',
-      }]
     },
     {
       path: '/ranking/:id/:gender',
       name: 'RankingDetail',
       component: RankingDetail
-    }, {
+    },
+    {
+      path: '/test',
+      name: "GoTop",
+      component: GoTop
+    },
+    {
       path: "*",
       name: "Error",
       component: Errors

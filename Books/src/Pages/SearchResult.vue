@@ -55,15 +55,18 @@
         </ul>
       </div>
     </div>
+    <GoTop/>
   </div>
 </template>
 
 <script>
 import request from "@/http_";
 import SearchHeader from "@/components/Search-header";
+import GoTop from "@/components/GoTop";
 export default {
   components: {
-    SearchHeader
+    SearchHeader,
+    GoTop
   },
   data() {
     return {

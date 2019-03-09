@@ -41,6 +41,7 @@
     <div class="footer">
       <Footer/>
     </div>
+    <GoTop/>
   </div>
 </template>
 
@@ -48,10 +49,12 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import request from "@/http_";
+import GoTop from "@/components/GoTop";
 export default {
   components: {
     Header,
-    Footer
+    Footer,
+    GoTop
   },
   data() {
     return {

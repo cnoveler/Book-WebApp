@@ -76,6 +76,7 @@
     <div class="search-page" v-show="isSearch">
       <Search v-model="isSearch"/>
     </div>
+    <GoTop/>
   </div>
 </template>
 
@@ -83,10 +84,12 @@
 import Header from "@/components/Header";
 import Search from "@/components/search";
 import request from "@/http_";
+import GoTop from "@/components/GoTop";
 export default {
   components: {
     Header,
-    Search
+    Search,
+    GoTop
   },
   data() {
     return {

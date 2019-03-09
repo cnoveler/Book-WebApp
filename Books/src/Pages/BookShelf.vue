@@ -102,6 +102,7 @@
     <div class="search-page" v-show="isSearch">
       <Search v-model="isSearch"/>
     </div>
+    <GoTop/>
   </div>
 </template>
 
@@ -109,6 +110,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Search from "@/components/search";
+import GoTop from "@/components/GoTop";
 export default {
   data() {
     return {
@@ -124,7 +126,8 @@ export default {
   components: {
     Header,
     Footer,
-    Search
+    Search,
+    GoTop
   },
   watch: {
     scrollTops(val) {

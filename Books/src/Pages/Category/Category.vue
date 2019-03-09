@@ -49,6 +49,7 @@
     <div class="search-page" v-show="isSearch">
       <Search v-model="isSearch"/>
     </div>
+    <GoTop/>
   </div>
 </template>
 
@@ -57,13 +58,15 @@ import Header from "@/components/Header";
 import Search from "@/components/search";
 import Footer from "@/components/Footer";
 import HomeCard from "@/components/HomeCard";
+import GoTop from "@/components/GoTop";
 import request from "@/http_";
 export default {
   components: {
     Header,
     Search,
     Footer,
-    HomeCard
+    HomeCard,
+    GoTop
   },
   data() {
     return {
