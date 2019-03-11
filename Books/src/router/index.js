@@ -15,10 +15,9 @@ import Ranking from "@/pages/Ranking/Ranking"
 import RankingDetail from "@/pages/Ranking/RankingDetail"
 import GoTop from "@/components/GoTop"
 
-
 Vue.use(Router);
 export default new Router({
-  mode: "history",
+  // mode: "history",
   routes: [{
     path: "/",
     name: "Home",
