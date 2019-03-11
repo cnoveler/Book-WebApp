@@ -1,10 +1,11 @@
-import Vue from "vue";
-import Router from "vue-router";
-import Home from "@/pages/Home";
-import BookShelf from "@/pages/BookShelf";
-import BookShelfHistory from "@/pages/BookShelfHistory";
-import Errors from "@/pages/Error";
-import SearchResult from "@/pages/SearchResult";
+import Vue from "vue"
+import Router from "vue-router"
+
+import Home from "@/pages/Home"
+import BookShelf from "@/pages/BookShelf"
+import BookShelfHistory from "@/pages/BookShelfHistory"
+import Errors from "@/pages/Error"
+import SearchResult from "@/pages/SearchResult"
 import BookDeatils from "@/pages/Books/BookDeatils"
 import BookChapter from "@/pages/Books/BookChapter"
 import BookContent from "@/pages/Books/BookContent"
@@ -13,8 +14,9 @@ import CategoryDetails from "@/pages/Category/CategoryDetails"
 import Ranking from "@/pages/Ranking/Ranking"
 import RankingDetail from "@/pages/Ranking/RankingDetail"
 import GoTop from "@/components/GoTop"
-Vue.use(Router);
 
+
+Vue.use(Router);
 export default new Router({
   mode: "history",
   routes: [{
