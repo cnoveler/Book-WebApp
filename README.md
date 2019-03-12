@@ -24,6 +24,15 @@
 - Element-UI
 - Vue-awesome-swiper
 
+在线预览
+--
+手机端预览：
+![](https://github.com/moxier/Book-WebApp/blob/master/img/books.png)
+
+PC端预览（请使用F12状态下查看）:
+
+[点击预览](http://47.106.64.47/)
+
 项目运行
 --
 ```shell
