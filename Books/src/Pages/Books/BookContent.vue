@@ -144,7 +144,7 @@
             <div class="module-chapter-x" v-show="isChapterOrTag">
               <div class="module-conut">
                 <div class="conut">
-                  <h4>共{{chapterList.chaptersCount1}}章</h4>
+                  <h4>共{{chapterListLen}}章</h4>
                   <span @click="isOrder=!isOrder">{{isOrder? '倒序':'正序'}}</span>
                 </div>
               </div>
@@ -182,6 +182,7 @@ export default {
       content: [], // 章节内容
       bookInfo: [], // 书籍信息
       chapterList: [], // 书籍章节
+      chapterListLen: 0,
       isLoadings: true,
       index: null,
       chapterCount: 0, // 用于定位目录章节
@@ -196,6 +197,10 @@ export default {
     };
   },
   watch: {
+    // 倒叙
+    isOrder(val) {
+      this.chapterList.chapters.reverse();
+    },
     isOpenChapter(val) {
       if (val) {
         document.documentElement.style.overflowY = "hidden";
@@ -206,6 +211,7 @@ export default {
     },
     isOptionOpen(val) {
       this.isSeting = false;
+      this.isMore = false;
     },
     content(val) {
       this.isLoadings = false;
@@ -288,6 +294,7 @@ export default {
         `${this.$config.BOOK_CHAPTERS_URL}${this._id}?view=chapters`
       );
       this.chapterList = res.data.mixToc;
+      this.chapterListLen = res.data.mixToc.chapters.length;
       //   console.log(this.chapterList);
 
       this.$nextTick(() => {
@@ -540,7 +547,7 @@ export default {
   width: 100%;
   height: 100%;
   z-index: 1;
-  position: absolute;
+  position: fixed;
   background: rgba($color: #000000, $alpha: 0.3);
 }
 .chapter-right-x {

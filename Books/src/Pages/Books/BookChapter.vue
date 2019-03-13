@@ -14,7 +14,7 @@
         </div>
         <div class="tab-content" v-if="isDir">
           <div class="module-header">
-            <h4>共{{chapterList.chaptersCount1}}章</h4>
+            <h4>共{{chapterListLen}}章</h4>
             <span @click="isOrder=!isOrder">{{isOrder? '倒序':'正序'}}</span>
           </div>
           <div class="chapter-list">
@@ -61,6 +61,7 @@ export default {
       _id: null, // 书籍id
       title: null, //书籍名称
       chapterList: [], // 书籍章节
+      chapterListLen: 0,
       isDir: true, // 当前是否选中得是目录选项
       isLoadings: true,
       isOrder: true // 顺序  false 正序  true 倒序
@@ -77,6 +78,7 @@ export default {
   methods: {
     // 点击章节
     click_chpater(i) {
+      console.log(i);
       this.$router.push({
         name: "BookContent",
         params: { _id: this._id, index: i }
@@ -89,6 +91,7 @@ export default {
         `${this.$config.BOOK_CHAPTERS_URL}${this._id}?view=chapters`
       );
       this.chapterList = res.data.mixToc;
+      this.chapterListLen = res.data.mixToc.chapters.length;
     }
   },
   created() {
