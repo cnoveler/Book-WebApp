@@ -22,6 +22,12 @@ import 'swiper/dist/css/swiper.css'
 Vue.use(VueAwesomeSwiper, /* { default global options } */ )
 
 
+// 执行路由之前 全局钩子 路由守卫
+router.beforeEach(function (to, from, next) {
+  document.title = to.meta.title
+  next();
+})
+
 Vue.config.productionTip = false
 Vue.mixin(mixins)
 // 注册 element-ui
