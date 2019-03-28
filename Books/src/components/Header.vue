@@ -56,11 +56,11 @@
               <div class="icon icon-home"></div>
               <div class="title">首页</div>
             </li>
-            <li>
+            <li @click="$router.push({name:'Catrgory'})">
               <div class="icon icon-sort"></div>
               <div class="title">分类</div>
             </li>
-            <li>
+            <li @click="$router.push({path:'/ranking/male'})">
               <div class="icon icon-rank"></div>
               <div class="title">排行榜</div>
             </li>
